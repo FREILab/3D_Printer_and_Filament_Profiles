@@ -57,31 +57,40 @@ def build_gcode(args) -> str:
     a("G90 ; absolute positioning")
     a("M83 ; relative extruder mode")
 
-    if args.dialect == "xl":
-        a("G28 XY ; home XY")
-        a(f"T{args.tool} S1 L0 D0 ; pick tool")
-        a("G28 Z ; home Z")
+    margin = args.margin
+    spacing = args.spacing
+    row_spacing = args.row_spacing
+
+    if args.dialect == "legacy":
+        # Matches real PrusaSlicer 2.9.4 MK3S output: heat before homing,
+        # then G28 W (home without mesh) + explicit G80 X/Y/W/H mesh-level.
+        a(f"M104 S{args.temp} ; set extruder temp")
+        a(f"M140 S{args.bed_temp} ; set bed temp")
+        a(f"M190 S{args.bed_temp} ; wait for bed temp")
+        a(f"M109 S{args.temp} ; wait for extruder temp")
+        a("G28 W ; home all without mesh bed level")
+        bbox_w = args.bed_x - 2 * margin
+        bbox_h = args.bed_y - 2 * margin
+        a(f"G80 X{margin} Y{margin} W{bbox_w} H{bbox_h} ; mesh bed levelling")
     else:
-        a("G28 ; home all axes")
+        if args.dialect == "xl":
+            a("G28 XY ; home XY")
+            a(f"T{args.tool} S1 L0 D0 ; pick tool")
+            a("G28 Z ; home Z")
+        else:  # single (MK3.5 / MK4S)
+            a("G28 ; home all axes")
 
-    a(f"M140 S{args.bed_temp} ; set bed temp")
-    a(f"M104 S{args.temp} T{args.tool} ; set nozzle temp")
-    a(f"M190 S{args.bed_temp} ; wait for bed temp")
-    a(f"M109 S{args.temp} T{args.tool} ; wait for nozzle temp")
-
-    if args.dialect in ("xl", "single"):
+        a(f"M140 S{args.bed_temp} ; set bed temp")
+        a(f"M104 S{args.temp} T{args.tool} ; set nozzle temp")
+        a(f"M190 S{args.bed_temp} ; wait for bed temp")
+        a(f"M109 S{args.temp} T{args.tool} ; wait for nozzle temp")
         a("G29 P1 ; invalidate & probe mesh")
         a("G29 P3.2 ; interpolate mesh")
         a("G29 P3.13 ; extrapolate mesh outside probed area")
         a("G29 A ; activate mesh bed leveling")
-    # legacy (MK3S): plain G28 above already triggers built-in XYZ-cal + mesh leveling
 
     a("G1 Z5 F600")
     a("")
-
-    margin = args.margin
-    spacing = args.spacing
-    row_spacing = args.row_spacing
     max_x = args.bed_x - margin
     max_y = args.bed_y - margin
     x = margin
@@ -112,7 +121,10 @@ def build_gcode(args) -> str:
         a("")
         x += spacing
 
-    a(f"M104 S0 T{args.tool}")
+    if args.dialect == "legacy":
+        a("M104 S0")
+    else:
+        a(f"M104 S0 T{args.tool}")
     a("M140 S0")
     a("G1 Z50 F600")
     a("M84")

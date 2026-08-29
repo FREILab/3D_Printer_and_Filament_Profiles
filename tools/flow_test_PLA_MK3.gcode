@@ -7,11 +7,12 @@
 M17 ; enable steppers
 G90 ; absolute positioning
 M83 ; relative extruder mode
-G28 ; home all axes
+M104 S210.0 ; set extruder temp
 M140 S60.0 ; set bed temp
-M104 S210.0 T0 ; set nozzle temp
 M190 S60.0 ; wait for bed temp
-M109 S210.0 T0 ; wait for nozzle temp
+M109 S210.0 ; wait for extruder temp
+G28 W ; home all without mesh bed level
+G80 X30.0 Y30.0 W190.0 H150.0 ; mesh bed levelling
 G1 Z5 F600
 
 ; --- pile 1/15: 6.0 mm3/s (F150) ---
@@ -179,7 +180,7 @@ G1 E500.0 F1197 ; sustained extrusion at target flow
 G1 E-2 F1800 ; retract
 G1 Z5 F600
 
-M104 S0 T0
+M104 S0
 M140 S0
 G1 Z50 F600
 M84
