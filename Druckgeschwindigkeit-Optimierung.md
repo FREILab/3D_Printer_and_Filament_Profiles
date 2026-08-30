@@ -1,6 +1,6 @@
 # Plan: Druckgeschwindigkeit / Volumetric Speed optimieren
 
-Stand: 2026-08-03, bezieht sich auf `2026-07-23/filament/*.ini`
+Stand: 2026-08-30, bezieht sich auf aktuelle `filament/*.ini` (Bettheizung seit 2026-08-30 aktiviert)
 
 ## Ausgangslage
 
@@ -60,11 +60,11 @@ Extruder-Skipping führt, bei kurzen Testkörpern aber oft nicht auffällt.
 1. Fertiges G-Code-File aus `tools/` verwenden (siehe Tabelle unten) — kein
    Slicing nötig, keine Konsole/API nötig. Datei genau wie einen normalen
    Druckjob hochladen (PrusaLink-Weboberfläche, USB) und starten.
-2. Der Druck heizt nur die Düse (kein Bett, kein Mesh-Leveling — beides
-   unnötig für diesen Test, siehe unten) und fährt dann automatisch und
-   **unbeaufsichtigt** ein Positionsraster ab. Nach jedem Pile bricht ein
-   automatischer Kringel-Move (kleines Achteck, zurückgezogen) den Faden
-   selbst ab, kein manuelles Eingreifen nötig.
+2. Der Druck heizt die Düse und das Bett (nach Material-Profil, typisch
+   60°C für PLA/TPU, 80°C für PETG) und fährt dann automatisch und
+   **unbeaufsichtigt** ein Positionsraster ab. Kein Mesh-Leveling nötig.
+   Nach jedem Pile bricht ein automatischer Kringel-Move (kleines Achteck,
+   zurückgezogen) den Faden selbst ab, kein manuelles Eingreifen nötig.
 3. Während/nach jeder Position: auf Klicken/Rattern am Extruder achten
    (Skipping) und den Blob anschauen (gleichmäßig rund + konstanter
    Durchmesser = ok; ausgefranst/dünner werdend/unterbrochen = beginnende
@@ -76,10 +76,12 @@ Extruder-Skipping führt, bei kurzen Testkörpern aber oft nicht auffällt.
    getestet hat) — am besten direkt im `filament_notes`-Feld, wie beim
    TPU-Profil schon gehandhabt.
 
-Bett und Mesh-Leveling sind bewusst weggelassen: Piles brauchen keine
-Betthaftung, und ein Mesh-Probe auf kaltem Bett lieferte in der Praxis
-falsche Kompensationsdaten, wodurch die Düse viel zu tief fuhr. Stattdessen
-wird auf fester, sicher hoher Z-Höhe (4mm) ohne Kompensation extrudiert.
+Mesh-Leveling ist bewusst weggelassen: Ein Mesh-Probe auf kaltem Bett
+lieferte in der Praxis falsche Kompensationsdaten, wodurch die Düse viel zu
+tief fuhr. Stattdessen wird auf fester, sicher hoher Z-Höhe (4mm) ohne
+Kompensation extrudiert. Das Bett wird hingegen geheizt, um realistischere
+Bedingungen (wie beim normalen Druck) zu simulieren und die
+Filament-Haftung zu verbessern.
 
 Alle Testdateien laufen mit demselben Flussbereich **6–48 mm³/s in 15
 Schritten à 3 mm³/s** (1500mm Filament pro Pile, ≈3.5–4g je nach Material),
@@ -98,20 +100,20 @@ Erzeugt werden die Dateien mit [tools/generate_flow_rate_test.py](tools/generate
 erzeugt wurde — für abweichende Materialien/Flussbereiche/Drucker einfach
 das Skript mit anderen Parametern erneut aufrufen).
 
-| Datei | Drucker-Dialekt | Düsentemp |
-|---|---|---|
-| `tools/flow_test_PLA_HF_0.4mm.gcode` | XL | 220°C |
-| `tools/flow_test_PETG_HF_0.4mm.gcode` | XL | 245°C |
-| `tools/flow_test_PETG_nonHF_0.4mm.gcode` | single (MK4S) | 245°C |
-| `tools/flow_test_PLA_nonHF_0.4mm.gcode` | single (MK4S) | 220°C |
-| `tools/flow_test_GreenTEC_PRO_0.4mm.gcode` | single (MK4S) | 220°C |
-| `tools/flow_test_PLA_MK3.gcode` | legacy (MK3S) | 210°C |
-| `tools/flow_test_PETG_MK3.gcode` | legacy (MK3S) | 240°C |
-| `tools/flow_test_PLA_HF_0.6mm.gcode` | XL | 220°C |
-| `tools/flow_test_PETG_HF_0.6mm.gcode` | XL | 240°C |
-| `tools/flow_test_PETG_nonHF_0.6mm.gcode` | XL | 240°C |
-| `tools/flow_test_PLA_nonHF_0.6mm.gcode` | XL | 220°C |
-| `tools/flow_test_TPU_XL.gcode` | XL | 230°C |
+| Datei | Drucker-Dialekt | Düsentemp | Bettheizung |
+|---|---|---|---|
+| `tools/flow_test_PLA_HF_0.4mm.gcode` | single (MK4S) | 215°C | 60°C |
+| `tools/flow_test_PETG_HF_0.4mm.gcode` | single (MK4S) | 235°C | 80°C |
+| `tools/flow_test_PETG_nonHF_0.4mm.gcode` | single (MK4S) | 230°C | 80°C |
+| `tools/flow_test_PLA_nonHF_0.4mm.gcode` | single (MK4S) | 210°C | 60°C |
+| `tools/flow_test_GreenTEC_PRO_0.4mm.gcode` | single (MK4S) | 200°C | 60°C |
+| `tools/flow_test_PLA_MK3.gcode` | legacy (MK3S) | 210°C | 60°C |
+| `tools/flow_test_PETG_MK3.gcode` | legacy (MK3S) | 230°C | 80°C |
+| `tools/flow_test_PLA_HF_0.6mm.gcode` | XL | 215°C | 60°C |
+| `tools/flow_test_PETG_HF_0.6mm.gcode` | XL | 235°C | 80°C |
+| `tools/flow_test_PETG_nonHF_0.6mm.gcode` | XL | 230°C | 80°C |
+| `tools/flow_test_PLA_nonHF_0.6mm.gcode` | XL | 210°C | 60°C |
+| `tools/flow_test_TPU_XL.gcode` | XL | 220°C | 60°C |
 
 TPU (MK3/MK4S) ist nicht dabei — laut Tabelle oben bereits am Testturm
 verifiziert (✅, 1.5 mm³/s), kein erneuter Test nötig.
