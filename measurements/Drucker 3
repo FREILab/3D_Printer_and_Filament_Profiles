@@ -1,0 +1,71 @@
+Drucker 3
+mk3 PETG Schwarz
+messreihe 1 2026-08-30
+;####### Flow Rate Sequence
+; Pile 1: 6.0mm3/s 0,63g
+; Pile 2: 9.0mm3/s 0,63g
+; Pile 3: 12.0mm3/s 0,61g
+; Pile 4: 15.0mm3/s klickt, 0,59g
+; Pile 5: 18.0mm3/s abgebrochen
+; Pile 6: 21.0mm3/s
+; Pile 7: 24.0mm3/s
+; Pile 8: 27.0mm3/s
+
+messreihe 2 2026-08-30
+;####### Flow Rate Sequence
+; Pile 1: 6.0mm3/s 0,62g
+; Pile 2: 9.0mm3/s 0,63g
+; Pile 3: 12.0mm3/s 0,61g
+; Pile 4: 15.0mm3/s klickt, 0,58g 
+; Pile 5: 18.0mm3/s abgebrochen
+; Pile 6: 21.0mm3/s
+; Pile 7: 24.0mm3/s
+; Pile 8: 27.0mm3/s
+
+messreihe 3 2026-08-30
+;####### Flow Rate Sequence
+; Pile 1: 6.0mm3/s 0,64g
+; Pile 2: 9.0mm3/s 0,60g
+; Pile 3: 12.0mm3/s 0,63g
+; Pile 4: 15.0mm3/s klickt, 0,58g 
+; Pile 5: 18.0mm3/s abgebrochen
+; Pile 6: 21.0mm3/s
+; Pile 7: 24.0mm3/s
+; Pile 8: 27.0mm3/s
+
+
+mk3 PLA Das Filament
+messreihe 1 2026-08-30
+;####### Flow Rate Sequence
+; Pile 1: 6.0mm3/s 0,62g
+; Pile 2: 9.0mm3/s 0,59g
+; Pile 3: 12.0mm3/s klickt 0,52g
+; Pile 4: 15.0mm3/s 
+; Pile 5: 18.0mm3/s 
+; Pile 6: 21.0mm3/s
+; Pile 7: 24.0mm3/s
+; Pile 8: 27.0mm3/s
+
+mk3 PLA Das Filament
+messreihe 2 2026-08-30
+;####### Flow Rate Sequence
+; Pile 1: 6.0mm3/s 0,61g
+; Pile 2: 8.0mm3/s 0,61g
+; Pile 3: 10.0mm3/s 0,58g
+; Pile 4: 12.0mm3/s klickt 0,50g
+
+mk3 PLA Das Filament
+messreihe 3 2026-08-30
+;####### Flow Rate Sequence
+; Pile 1: 6.0mm3/s 0,60g
+; Pile 2: 8.0mm3/s 0,60g
+; Pile 3: 10.0mm3/s klickt 0,57g
+; Pile 4: 12.0mm3/s abgebrochen
+
+mk3 PLA Das Filament
+messreihe 3 2026-08-30
+;####### Flow Rate Sequence
+; Pile 1: 6.0mm3/s 0,60g
+; Pile 2: 8.0mm3/s 0,59g
+; Pile 3: 10.0mm3/s klickt 0,55g
+; Pile 4: 12.0mm3/s abgebrochen
