@@ -53,6 +53,7 @@ G4 S0 ; Dwell
 M109 R210
 
 ;####### Pile 1/8: 6.0mm3/s
+M400 ; wait for previous pile's moves to finish before updating display
 M117 210C // 6.0mm3/s
 G0 X5 Y5 Z15.5 F6000
 G4 S20; Stabalize
@@ -69,6 +70,7 @@ G0 X5 Y5 F6000
 G92 E0 ; Reset Extruder
 
 ;####### Pile 2/8: 9.0mm3/s
+M400 ; wait for previous pile's moves to finish before updating display
 M117 210C // 9.0mm3/s
 G0 X5 Y55 Z15.5 F6000
 G4 S20; Stabalize
@@ -85,6 +87,7 @@ G0 X5 Y55 F6000
 G92 E0 ; Reset Extruder
 
 ;####### Pile 3/8: 12.0mm3/s
+M400 ; wait for previous pile's moves to finish before updating display
 M117 210C // 12.0mm3/s
 G0 X5 Y105 Z15.5 F6000
 G4 S20; Stabalize
@@ -101,6 +104,7 @@ G0 X5 Y105 F6000
 G92 E0 ; Reset Extruder
 
 ;####### Pile 4/8: 15.0mm3/s
+M400 ; wait for previous pile's moves to finish before updating display
 M117 210C // 15.0mm3/s
 G0 X5 Y155 Z15.5 F6000
 G4 S20; Stabalize
@@ -117,6 +121,7 @@ G0 X5 Y155 F6000
 G92 E0 ; Reset Extruder
 
 ;####### Pile 5/8: 18.0mm3/s
+M400 ; wait for previous pile's moves to finish before updating display
 M117 210C // 18.0mm3/s
 G0 X85 Y5 Z15.5 F6000
 G4 S20; Stabalize
@@ -133,6 +138,7 @@ G0 X85 Y5 F6000
 G92 E0 ; Reset Extruder
 
 ;####### Pile 6/8: 21.0mm3/s
+M400 ; wait for previous pile's moves to finish before updating display
 M117 210C // 21.0mm3/s
 G0 X85 Y55 Z15.5 F6000
 G4 S20; Stabalize
@@ -149,6 +155,7 @@ G0 X85 Y55 F6000
 G92 E0 ; Reset Extruder
 
 ;####### Pile 7/8: 24.0mm3/s
+M400 ; wait for previous pile's moves to finish before updating display
 M117 210C // 24.0mm3/s
 G0 X85 Y105 Z15.5 F6000
 G4 S20; Stabalize
@@ -165,6 +172,7 @@ G0 X85 Y105 F6000
 G92 E0 ; Reset Extruder
 
 ;####### Pile 8/8: 27.0mm3/s
+M400 ; wait for previous pile's moves to finish before updating display
 M117 210C // 27.0mm3/s
 G0 X85 Y155 Z15.5 F6000
 G4 S20; Stabalize

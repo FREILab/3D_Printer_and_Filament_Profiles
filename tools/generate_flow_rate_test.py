@@ -157,6 +157,7 @@ def build_cnc_kitchen_gcode(args) -> str:
             feed = cnc_kitchen_feedrate_for_flow(flow)
 
             a(f";####### Pile {flow_idx + 1}/{args.flow_count}: {flow}mm3/s")
+            a("M400 ; wait for previous pile's moves to finish before updating display")
             a(f"M117 {temp:.0f}C // {flow}mm3/s")
             a(f"G0 X{x:.0f} Y{y:.0f} Z15.5 F6000")
             a("G4 S20; Stabalize")

@@ -42,29 +42,42 @@ Für jedes Material/Drucker/Düsen-Kombination einen **geprüften** statt
 geschätzten `filament_max_volumetric_speed`-Wert hinterlegen — höher wo
 möglich (kürzere Druckzeiten), niedriger wo nötig (Qualität/Stabilität).
 
-## Testmethode: Pile-Test (CNC Kitchen-Methode)
+## Testmethode: CNC-Kitchen Auto-Flow-Pattern
 
 PrusaSlicer hat **keinen** eingebauten Volumetric-Speed-Testkörper (das
 gelegentlich kursierende "Rechtsklick auf die Platte → Add Volumetric speed
 test" existiert in unserer Version nicht — das zugehörige Feature wurde nur
 als offener, nie gemergter PR #15322 vorgeschlagen). Statt eines Testkörpers
-verwenden wir die "Pile"-Methode von CNC Kitchen
-([Blogpost](https://www.cnckitchen.com/blog/flow-rate-benchmarking-of-a-hotend)):
-An einer festen Position wird ohne XY-Bewegung eine definierte Filamentlänge
-am Stück bei einer festen Ziel-Flussrate extrudiert (Dutzende Sekunden statt
-weniger Sekunden), danach zur nächsten Position mit höherer Flussrate
-weitergefahren. Das bildet den Wärmestau bei anhaltend hoher Flussrate ab —
-genau das Szenario, das bei langen Infill-Bahnen in großen Objekten zu
-Extruder-Skipping führt, bei kurzen Testkörpern aber oft nicht auffällt.
+verwenden wir das klassische "Auto Flow Pattern" von CNC Kitchen / Stefan
+Hermann, bekannt aus dem
+[Printables-Referenzpaket](https://www.printables.com/model/160335-hotend-benchmark-test-g-codes/)
+(Hintergrund zur Methode auch im
+[CNC-Kitchen-Blogpost](https://www.cnckitchen.com/blog/flow-rate-benchmarking-of-a-hotend)):
+An festen Gitterpositionen wird jeweils ohne XY-Bewegung eine definierte
+Filamentlänge am Stück bei einer festen Ziel-Flussrate extrudiert (20s
+Stabilisierungspause, Prime, Wipe, dann die eigentliche Extrusion),
+danach zur nächsten Position mit höherer Flussrate weitergefahren. Das
+bildet den Wärmestau bei anhaltend hoher Flussrate ab — genau das Szenario,
+das bei langen Infill-Bahnen in großen Objekten zu Extruder-Skipping führt,
+bei kurzen Testkörpern aber oft nicht auffällt.
+
+**Hinweis:** Frühere Versionen dieses Dokuments beschrieben eine selbstgebaute
+"Pile"-Methode (bewegter Kreis statt fixer Position, 1500mm/Pile, 15 Stufen
+6–48 mm³/s). Diese wurde in Commit `2a43877` ("adopt cnc kitchen") zugunsten
+des oben beschriebenen CNC-Kitchen-Musters verworfen — das Skript
+(`--pattern cnc-kitchen`) ist jetzt der Standard, alle Dateien in `tools/`
+sind bereits im neuen Format.
 
 1. Fertiges G-Code-File aus `tools/` verwenden (siehe Tabelle unten) — kein
    Slicing nötig, keine Konsole/API nötig. Datei genau wie einen normalen
    Druckjob hochladen (PrusaLink-Weboberfläche, USB) und starten.
-2. Der Druck heizt die Düse und das Bett (nach Material-Profil, typisch
-   60°C für PLA/TPU, 80°C für PETG) und fährt dann automatisch und
-   **unbeaufsichtigt** ein Positionsraster ab. Kein Mesh-Leveling nötig.
-   Nach jedem Pile bricht ein automatischer Kringel-Move (kleines Achteck,
-   zurückgezogen) den Faden selbst ab, kein manuelles Eingreifen nötig.
+2. Der Druck heizt die Düse und das Bett (aktuell einheitlich **60°C** bei
+   allen Dateien, siehe Tabelle unten — nicht materialspezifisch aus dem
+   `.ini`-Profil übernommen) und fährt dann automatisch und
+   **unbeaufsichtigt** ein Positionsraster ab (3 Spalten × 4 Zeilen, bis zu
+   12 Piles). Kein Mesh-Leveling nötig. Nach jedem Pile bricht ein
+   automatischer Kringel-Move (kleines Achteck, zurückgezogen) den Faden
+   selbst ab, kein manuelles Eingreifen nötig.
 3. Während/nach jeder Position: auf Klicken/Rattern am Extruder achten
    (Skipping) und den Blob anschauen (gleichmäßig rund + konstanter
    Durchmesser = ok; ausgefranst/dünner werdend/unterbrochen = beginnende
@@ -78,51 +91,67 @@ Extruder-Skipping führt, bei kurzen Testkörpern aber oft nicht auffällt.
 
 Mesh-Leveling ist bewusst weggelassen: Ein Mesh-Probe auf kaltem Bett
 lieferte in der Praxis falsche Kompensationsdaten, wodurch die Düse viel zu
-tief fuhr. Stattdessen wird auf fester, sicher hoher Z-Höhe (4mm) ohne
-Kompensation extrudiert. Das Bett wird hingegen geheizt, um realistischere
-Bedingungen (wie beim normalen Druck) zu simulieren und die
-Filament-Haftung zu verbessern.
+tief fuhr. Stattdessen wird auf fester, sicher hoher Z-Höhe ohne
+Kompensation extrudiert.
 
-Alle Testdateien laufen mit demselben Flussbereich **6–48 mm³/s in 15
-Schritten à 3 mm³/s** (1500mm Filament pro Pile, ≈3.5–4g je nach Material),
-unabhängig vom aktuell im Profil stehenden Wert — damit sind Ergebnisse
-zwischen Materialien direkt vergleichbar. Die Pile-Länge ist bewusst so
-gewählt, dass sich jeder Blob auf einer haushaltsüblichen Feinwaage
-(0.1g-Auflösung) noch mit ca. 3% Genauigkeit wiegen lässt (500mm/~1.5g wäre
-zu ungenau gewesen). Gesamtlaufzeit pro Datei dadurch ca. 45–50 Minuten
-(unbeaufsichtigt). Ausnahme: TPU (0.75–2.5 mm³/s in acht 0.25er-Schritten,
-100mm-Piles) — dort bleibt die Beurteilung visuell/akustisch, da eine
-wägbare Masse bei diesen Flussraten unpraktikabel lange Extrusionszeiten
-bräuchte.
+Alle Testdateien laufen aktuell mit demselben Flussbereich **6–27 mm³/s in
+8 Schritten à 3 mm³/s** (200mm Filament pro Pile, ≈0.6g je Pile — auf einer
+haushaltsüblichen Feinwaage mit 0.1g-Auflösung noch grob wägbar, siehe
+[measurements/](measurements/)), unabhängig vom aktuell im Profil stehenden
+Wert. Gesamtlaufzeit pro Datei dadurch deutlich kürzer als bei der alten
+Pile-Methode, ca. 10–15 Minuten (unbeaufsichtigt).
+
+**Bekanntes Problem — Flussbereich passt nicht für jedes Material:** Der
+gemeinsame 6–27-Bereich in 3er-Schritten ist zu grob bzw. an der falschen
+Stelle für Materialien, deren reale Grenze weit unter oder mitten im
+Testbereich liegt:
+- **MK3 (legacy):** PETG klickt bereits konsistent bei 15 mm³/s (siehe
+  Ergebnisse unten) — 3er-Schritte sind zu grob, um die Schwelle zwischen 12
+  und 15 einzugrenzen.
+- **TPU (XL):** `flow_test_TPU_XL.gcode` nutzt aktuell denselben 6–27
+  mm³/s-Bereich wie alle anderen Materialien. Die bisher angenommene
+  Materialobergrenze liegt bei 1.5–2.0 mm³/s (siehe Tabelle oben) — der
+  gesamte Testbereich läge damit weit über einer sinnvollen TPU-Flussrate.
+  Vor einem TPU-Test auf der XL sollte die Datei mit einem passenden,
+  niedrigeren `--flow-start`/`--flow-step` (z. B. 0.75–2.5 mm³/s in
+  0.25er-Schritten, wie ursprünglich für TPU vorgesehen) neu erzeugt werden.
 
 Erzeugt werden die Dateien mit [tools/generate_flow_rate_test.py](tools/generate_flow_rate_test.py)
-(jede Datei enthält als Kommentar im Kopf den genauen Aufruf, mit dem sie
-erzeugt wurde — für abweichende Materialien/Flussbereiche/Drucker einfach
-das Skript mit anderen Parametern erneut aufrufen).
+(`--pattern cnc-kitchen`, jetzt Standard). Anders als beim alten Pile-Muster
+schreibt der CNC-Kitchen-Generator den genauen Aufruf **nicht** als Kommentar
+in die Datei — für abweichende Materialien/Flussbereiche/Drucker das Skript
+mit den unten passenden `--dialect`/`--temp`/`--flow-*`-Parametern erneut
+aufrufen (Werte siehe Tabelle, per `grep -E "Prusa |bedTemp|startFlow|flowOffset|flowSteps|startTemp" tools/flow_test_*.gcode` aus den bestehenden Dateien ablesbar).
 
-| Datei | Drucker-Dialekt | Düsentemp | Bettheizung |
-|---|---|---|---|
-| `tools/flow_test_PLA_HF_0.4mm.gcode` | single (MK4S) | 215°C | 60°C |
-| `tools/flow_test_PETG_HF_0.4mm.gcode` | single (MK4S) | 235°C | 80°C |
-| `tools/flow_test_PETG_nonHF_0.4mm.gcode` | single (MK4S) | 230°C | 80°C |
-| `tools/flow_test_PLA_nonHF_0.4mm.gcode` | single (MK4S) | 210°C | 60°C |
-| `tools/flow_test_GreenTEC_PRO_0.4mm.gcode` | single (MK4S) | 200°C | 60°C |
-| `tools/flow_test_PLA_MK3.gcode` | legacy (MK3S) | 210°C | 60°C |
-| `tools/flow_test_PETG_MK3.gcode` | legacy (MK3S) | 230°C | 80°C |
-| `tools/flow_test_PLA_HF_0.6mm.gcode` | XL | 215°C | 60°C |
-| `tools/flow_test_PETG_HF_0.6mm.gcode` | XL | 235°C | 80°C |
-| `tools/flow_test_PETG_nonHF_0.6mm.gcode` | XL | 230°C | 80°C |
-| `tools/flow_test_PLA_nonHF_0.6mm.gcode` | XL | 210°C | 60°C |
-| `tools/flow_test_TPU_XL.gcode` | XL | 220°C | 60°C |
+| Datei | Drucker-Dialekt | Düsentemp | Bettheizung | Flussbereich |
+|---|---|---|---|---|
+| `tools/flow_test_PLA_HF_0.4mm.gcode` | single (MK4S) | 210°C | 60°C | 6–27 mm³/s, 8×3er |
+| `tools/flow_test_PETG_HF_0.4mm.gcode` | single (MK4S) | 230°C | 60°C | 6–27 mm³/s, 8×3er |
+| `tools/flow_test_PETG_nonHF_0.4mm.gcode` | single (MK4S) | 230°C | 60°C | 6–27 mm³/s, 8×3er |
+| `tools/flow_test_PLA_nonHF_0.4mm.gcode` | single (MK4S) | 210°C | 60°C | 6–27 mm³/s, 8×3er |
+| `tools/flow_test_GreenTEC_PRO_0.4mm.gcode` | single (MK4S) | 210°C | 60°C | 6–27 mm³/s, 8×3er |
+| `tools/flow_test_PLA_MK3.gcode` | legacy (MK3S) | 210°C | 60°C | 6–12 mm³/s, 4×2er (verfeinert nach MK3-PETG-Ergebnis) |
+| `tools/flow_test_PETG_MK3.gcode` | legacy (MK3S) | 240°C | 60°C | 6–27 mm³/s, 8×3er (getestet, s. Ergebnisse — Auflösung zu grob) |
+| `tools/flow_test_PLA_HF_0.6mm.gcode` | XL | 210°C | 60°C | 6–27 mm³/s, 8×3er |
+| `tools/flow_test_PETG_HF_0.6mm.gcode` | XL | 230°C | 60°C | 6–27 mm³/s, 8×3er |
+| `tools/flow_test_PETG_nonHF_0.6mm.gcode` | XL | 230°C | 60°C | 6–27 mm³/s, 8×3er |
+| `tools/flow_test_PLA_nonHF_0.6mm.gcode` | XL | 210°C | 60°C | 6–27 mm³/s, 8×3er |
+| `tools/flow_test_TPU_XL.gcode` | XL | 200°C | 60°C | 6–27 mm³/s, 8×3er (⚠️ zu hoch für TPU, vor Nutzung neu generieren) |
 
 TPU (MK3/MK4S) ist nicht dabei — laut Tabelle oben bereits am Testturm
 verifiziert (✅, 1.5 mm³/s), kein erneuter Test nötig.
 
-Temperaturen/Bett-Werte in allen Dateien stammen aus den `FREILab *.ini`-Profilen
-und gelten für **Das Filament**-PLA/-PETG (`filament_vendor = Das Filament`),
-nicht für generisches PLA/PETG oder Prusament — bei Wechsel des
-Filamentherstellers müssen Temp/Bett neu aus dem jeweiligen Profil übernommen
-und die Dateien neu generiert werden.
+Werte oben direkt aus den Kopf-Kommentaren der aktuell committeten
+`.gcode`-Dateien ausgelesen (Stand 2026-08-30), nicht aus den `.ini`-Profilen
+übernommen — die Bettheizung ist z. B. bei **allen** Dateien einheitlich auf
+60°C gesetzt, obwohl PETG in den `FREILab *.ini`-Profilen mit 80°C
+Betttemperatur läuft. Für diesen Test ist das voraussichtlich unkritisch
+(reine Extrusion, keine Bauteilhaftung über mehrere Schichten nötig), aber
+bei Fragen zur Reproduzierbarkeit gegenüber echten Druckbedingungen im
+Hinterkopf behalten. Bei Wechsel des Filamentherstellers oder wenn Temp/Bett
+wieder materialspezifisch aus dem jeweiligen Profil übernommen werden sollen,
+müssen die Dateien mit den passenden `--temp`/`--bed-temp`-Werten neu
+generiert werden.
 
 ## Priorisierte Testreihenfolge
 
@@ -153,7 +182,8 @@ riskant — hier bringt Testen Zeitersparnis, aber kein Sicherheitsrisiko):
 
 | Datum | Profil | Getestet | Ergebnis | Schlussfolgerung |
 |---|---|---|---|---|
-| 2026-08-29 | PETG (MK3) | `tools/flow_test_PETG_MK3.gcode`, alle 15 Stufen 6–48 mm³/s | Kein Skipping/Rattern über den gesamten Bereich | Aktueller Wert (8) ist deutlich zu konservativ. Echte Obergrenze liegt über 48 mm³/s (Testbereich ausgeschöpft) — für einen belastbaren neuen `filament_max_volumetric_speed` müsste mit höherem `--flow-start`/`--flow-count` erneut getestet werden, um die tatsächliche Grenze zu finden. Bis dahin nicht einfach auf 48 setzen (Sicherheitsmarge, ungetestete Zone). |
+| ~~2026-08-29~~ | ~~PETG (MK3)~~ | ~~`tools/flow_test_PETG_MK3.gcode`, alle 15 Stufen 6–48 mm³/s~~ | ~~Kein Skipping/Rattern über den gesamten Bereich~~ | **Verworfen/falsch.** Die Datei nutzt für MK3 (legacy) tatsächlich das klassische CNC-Kitchen-Muster mit nur 8 Stufen 6–27 mm³/s (3er-Schritten), nicht 15 Stufen bis 48 — und wurde vor dem Dialect-Fix (Commit `5652ce0`) gelaufen. Ergebnis unten (2026-08-30) ersetzt diesen Eintrag. |
+| 2026-08-30 | PETG (MK3) | `tools/flow_test_PETG_MK3.gcode`, 3× Messreihe, Stufen 6–27 mm³/s (3er-Schritte) | Konsistent über alle 3 Messreihen: 6/9/12 mm³/s sauber (~0.6g je Pile), **15 mm³/s klickt** (Extruder-Skipping hörbar), 18 mm³/s abgebrochen, 21–27 nicht mehr erreicht | Aktueller Profilwert (8) ist zu konservativ, aber die reale Grenze liegt deutlich niedriger als zunächst angenommen: irgendwo zwischen 12 (ok) und 15 (klickt) mm³/s. Mit 10–15 % Marge unter 12 ergäbe das ca. **10–11 mm³/s** als neuen `filament_max_volumetric_speed` — aber die 3er-Schrittweite ist zu grob, um die Schwelle präzise zu bestimmen. **Nächster Schritt:** MK3-Testdatei mit feinerer Auflösung neu erzeugen, z. B. `--flow-start 9 --flow-step 1 --flow-count 10` (9–18 mm³/s in 1er-Schritten), um die exakte Kippgrenze zwischen 12 und 15 einzugrenzen. |
 
 ## Vorgehen
 
