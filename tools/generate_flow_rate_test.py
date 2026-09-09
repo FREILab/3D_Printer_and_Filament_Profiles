@@ -89,8 +89,14 @@ def build_cnc_kitchen_gcode(args) -> str:
     if temp_count <= 0:
         raise SystemExit("--temp-count must be >= 1")
 
-    x_positions = [5.0, 85.0, 165.0]
-    y_positions = [5.0, 55.0, 105.0, 155.0]
+    if args.dialect == "xl":
+        # XL has a 360x360 bed, so give piles more clearance to avoid the
+        # toolhead crushing an already-deposited pile when moving to the next.
+        x_positions = [5.0, 95.0, 185.0]
+        y_positions = [5.0, 95.0, 185.0, 275.0]
+    else:
+        x_positions = [5.0, 85.0, 165.0]
+        y_positions = [5.0, 70.0, 135.0, 200.0]
 
     a("; *** CNC Kitchen Auto Flow Pattern Generator 0.93")
     a("; *** 02/04/26 Stefan Hermann")
@@ -112,7 +118,7 @@ def build_cnc_kitchen_gcode(args) -> str:
     a("; blobHeight = 10")
     a("; extrusionAmount = 200")
     a("; xSpacing = 40")
-    a("; ySpacing = 50")
+    a("; ySpacing = 65")
     a(f"; startFlow = {args.flow_start}")
     a(f"; flowOffset = {args.flow_step}")
     a(f"; flowSteps = {args.flow_count}")

@@ -18,7 +18,7 @@
 ; blobHeight = 10
 ; extrusionAmount = 200
 ; xSpacing = 40
-; ySpacing = 50
+; ySpacing = 65
 ; startFlow = 6.0
 ; flowOffset = 2.0
 ; flowSteps = 4
@@ -68,7 +68,7 @@ G92 E0 ; Reset Extruder
 ;####### Pile 2/4: 8.0mm3/s
 M400 ; wait for previous pile's moves to finish before updating display
 M117 210C // 8.0mm3/s
-G0 X5 Y55 Z15.5 F6000
+G0 X5 Y70 Z15.5 F6000
 G4 S20; Stabalize
 G0 Z0.3 ; Drop down
 G1 X30 E20 F300 ;Prime
@@ -79,13 +79,13 @@ G1 E1 F3600 ; De-Retract
 G1 Z10.5 E200 F9.98 ; Extrude
 G1 E-1 F3600 ; Retract
 G0 Z15.5; Lift
-G0 X5 Y55 F6000
+G0 X5 Y70 F6000
 G92 E0 ; Reset Extruder
 
 ;####### Pile 3/4: 10.0mm3/s
 M400 ; wait for previous pile's moves to finish before updating display
 M117 210C // 10.0mm3/s
-G0 X5 Y105 Z15.5 F6000
+G0 X5 Y135 Z15.5 F6000
 G4 S20; Stabalize
 G0 Z0.3 ; Drop down
 G1 X30 E20 F300 ;Prime
@@ -96,13 +96,13 @@ G1 E1 F3600 ; De-Retract
 G1 Z10.5 E200 F12.47 ; Extrude
 G1 E-1 F3600 ; Retract
 G0 Z15.5; Lift
-G0 X5 Y105 F6000
+G0 X5 Y135 F6000
 G92 E0 ; Reset Extruder
 
 ;####### Pile 4/4: 12.0mm3/s
 M400 ; wait for previous pile's moves to finish before updating display
 M117 210C // 12.0mm3/s
-G0 X5 Y155 Z15.5 F6000
+G0 X5 Y200 Z15.5 F6000
 G4 S20; Stabalize
 G0 Z0.3 ; Drop down
 G1 X30 E20 F300 ;Prime
@@ -113,7 +113,7 @@ G1 E1 F3600 ; De-Retract
 G1 Z10.5 E200 F14.97 ; Extrude
 G1 E-1 F3600 ; Retract
 G0 Z15.5; Lift
-G0 X5 Y155 F6000
+G0 X5 Y200 F6000
 G92 E0 ; Reset Extruder
 
 ;####### End G-Code

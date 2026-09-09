@@ -1,0 +1,37 @@
+Drucker 4
+XL PLA HF Kopf1 metallic rot
+messreihe 1 2026-09-09
+HINWEIS: Waage stand auf dem Heizbett, driftete massiv -- Gewichtswerte
+mit Vorsicht behandeln (nicht belastbar). Klick-Beobachtung bleibt
+unabhaengig davon gueltig.
+;####### Flow Rate Sequence
+; Pile 1: 6.0mm3/s 0,55g
+; Pile 2: 9.0mm3/s 0,58g
+; Pile 3: 12.0mm3/s 0,61g
+; Pile 4: 15.0mm3/s 0,62g
+; Pile 5: 18.0mm3/s 0,59g
+; Pile 6: 21.0mm3/s klickt, abgebrochen
+; Pile 7: 24.0mm3/s
+; Pile 8: 27.0mm3/s
+
+messreihe 2 2026-09-09
+;####### Flow Rate Sequence
+; Pile 1: 6.0mm3/s 0,57g
+; Pile 2: 9.0mm3/s 0,56g
+; Pile 3: 12.0mm3/s 0,57g
+; Pile 4: 15.0mm3/s 0,57g
+; Pile 5: 18.0mm3/s 0,56g
+; Pile 6: 21.0mm3/s klickt, abgebrochen
+; Pile 7: 24.0mm3/s
+; Pile 8: 27.0mm3/s
+
+messreihe 3 2026-09-09
+;####### Flow Rate Sequence
+; Pile 1: 6.0mm3/s 0,57g
+; Pile 2: 9.0mm3/s 0,57g
+; Pile 3: 12.0mm3/s 0,58g
+; Pile 4: 15.0mm3/s 0,58g
+; Pile 5: 18.0mm3/s 0,57g
+; Pile 6: 21.0mm3/s klickt, abgebrochen
+; Pile 7: 24.0mm3/s
+; Pile 8: 27.0mm3/s

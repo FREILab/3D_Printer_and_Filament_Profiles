@@ -1,0 +1,182 @@
+FLOW-RATE-TEST-PLAN
+====================
+Vollstaendige Liste aller Drucker/Duese/Material-Kombinationen fuer den
+CNC-Kitchen-Flow-Test. Dateinamen enthalten den Drucker
+(flow_test_Drucker<N>_...), um Verwechslungen zwischen z.B. MK4S-0.4mm
+und XL-0.4mm zu vermeiden.
+
+Aus dieser Liste werden die tools/flow_test_*.gcode Dateien mit
+tools/generate_flow_rate_test.py erzeugt:
+
+  python3 tools/generate_flow_rate_test.py --out tools/<Datei> \
+      --dialect <dialect> --temp <temp> --bed-temp <bed> \
+      --flow-start <fs> --flow-step <fstep> --flow-count <fc>
+
+(--pattern cnc-kitchen ist Default, muss nicht angegeben werden)
+
+Quelle Drucker-Hardware: printer/*.ini (nozzle_diameter, nozzle_high_flow,
+bed_shape -- gegengeprueft, alle Bettgroessen entsprechen den Skript-
+Defaults: 250x210 fuer single/legacy, 360x360 fuer xl)
+Quelle Temp/Material:    filament/*.ini (temperature, bed_temperature)
+
+ALLE Dateien nutzen jetzt die EXAKTEN Temp/Bett-Werte aus dem jeweils
+passenden .ini-Profil (nicht nur nach Material, sondern nach der genauen
+Drucker/HF-non-HF/Duesen-Kombination -- z.B. PETG non-HF (MK4S) hat 245C,
+PETG non-HF (XL) hat 240C, obwohl beides "PETG non-HF 0.4mm" ist).
+Anlass: XL PLA HF klickte beim Prime-Move mit der alten, zu niedrigen
+Pauschal-Temp (210 statt korrekt 220C).
+
+Offen bleibt weiterhin nur der Flussbereich (6-27 mm3/s), NICHT die Temp/
+Bett-Werte -- die sind jetzt ueberall korrekt.
+
+
+DRUCKER 1 - Prusa MK3.5 - 0.6mm Duese (HF-Hotend, nozzle_high_flow=1)
+  dialect=single, bed=250x210 (bestaetigt via printer-ini)
+  Hinweis: aktuell existieren keine dedizierten "(MK3.5)" Filament-.ini-
+  Profile, nur die XL-0.6mm-Profile. Werte unten von dort uebernommen
+  (gleiche Duesenphysik).
+
+  PLA HF 0.6mm
+    quelle: PLA HF 0.6mm (XL).ini -- temp=220 bed=60  flow=6-27 (8x3)
+    status: VORHANDEN, exakte .ini-Werte
+    datei: tools/flow_test_Drucker1_PLA_HF_0.6mm.gcode
+
+  PETG HF 0.6mm
+    quelle: PETG HF 0.6mm (XL).ini -- temp=240 bed=80  flow=6-27 (8x3)
+    status: VORHANDEN, exakte .ini-Werte
+    datei: tools/flow_test_Drucker1_PETG_HF_0.6mm.gcode
+
+
+DRUCKER 2 - Prusa MK4S - 0.4mm Duese, HF-Hotend (nozzle_high_flow=1)
+  dialect=single, bed=250x210 (bestaetigt via printer-ini)
+
+  PLA HF (MK4S)
+    quelle: PLA HF (MK4S).ini -- temp=220 bed=60  flow=6-27 (8x3)
+    status: VORHANDEN, exakte .ini-Werte
+    datei: tools/flow_test_Drucker2_PLA_HF_0.4mm.gcode
+
+  PETG HF (MK4S)
+    quelle: PETG HF (MK4S).ini -- temp=245 bed=80  flow=6-27 (8x3)
+    status: VORHANDEN, exakte .ini-Werte
+    datei: tools/flow_test_Drucker2_PETG_HF_0.4mm.gcode
+
+
+DRUCKER 2b - Prusa MK4S - 0.4mm Duese, Standard-Hotend (nozzle_high_flow=0)
+  dialect=single, bed=250x210 (bestaetigt via printer-ini)
+
+  PLA non-HF (MK4S)
+    quelle: PLA non-HF (MK4S).ini -- temp=220 bed=60  flow=6-27 (8x3)
+    status: VORHANDEN, exakte .ini-Werte
+    datei: tools/flow_test_Drucker2b_PLA_nonHF_0.4mm.gcode
+
+  PETG non-HF (MK4S)
+    quelle: PETG non-HF (MK4S).ini -- temp=245 bed=80  flow=6-27 (8x3)
+    status: VORHANDEN, exakte .ini-Werte
+    datei: tools/flow_test_Drucker2b_PETG_nonHF_0.4mm.gcode
+
+  GreenTEC PRO (MK4S)
+    quelle: GREENTEC PRO (MK4S).ini -- temp=220 bed=60  flow=6-27 (8x3)
+    status: VORHANDEN, exakte .ini-Werte
+    datei: tools/flow_test_Drucker2b_GreenTEC_PRO_0.4mm.gcode
+
+
+DRUCKER 3 - Prusa MK3S - 0.4mm Duese (non-HF, legacy Firmware)
+  dialect=legacy, bed=250x210 (bestaetigt via printer-ini)
+
+  PLA (MK3)
+    quelle: PLA (MK3).ini -- temp=210 bed=60
+    flow=6-12 (4x2, verfeinert nach Testergebnis -- siehe MD)
+    status: VORHANDEN + bereits getestet (Ergebnis: mvs=7, siehe MD)
+    datei: tools/flow_test_Drucker3_PLA_0.4mm.gcode
+
+  PETG (MK3)
+    quelle: PETG (MK3).ini -- temp=240 bed=80
+    flow=6-27 (8x3) -- laut MD zu grob, Schwelle liegt zwischen 12-15
+    status: VORHANDEN, Bett auf 80C korrigiert (war 60C); bereits mit alter
+    Bett-Temp getestet (Ergebnis: mvs=10, siehe MD) -- Testergebnis bleibt
+    gueltig, Bett-Temp beeinflusst die Extrusion selbst kaum
+    datei: tools/flow_test_Drucker3_PETG_0.4mm.gcode
+    empfehlung: bei Neugenerierung auf 6-15 (5x2 oder aehnlich) verfeinern
+
+  TPU V2 (MK3-MK4S)
+    status: KEIN TEST NOETIG -- bereits am Testturm verifiziert (mvs=1.5,
+    U. Hornstein 24.1.24, siehe MD)
+
+
+DRUCKER 4 - Prusa XL 5T - Tool 0+1: 0.4mm HF-Hotend (nozzle_high_flow=1)
+  dialect=xl, bed=360x360 (bestaetigt via printer-ini), tool=0 oder 1
+
+  PLA HF (XL) 0.4mm
+    quelle: PLA HF (XL).ini -- temp=220 bed=60  flow=6-27 (8x3)
+    status: VORHANDEN, auf 220C korrigiert (Klicken beim Prime-Move bei
+    210C beobachtet -- reales .ini-Temp behebt es)
+    datei: tools/flow_test_Drucker4_PLA_HF_0.4mm.gcode
+
+  PETG HF (XL) 0.4mm
+    quelle: PETG HF (XL).ini -- temp=245 bed=80  flow=6-27 (8x3)
+    status: VORHANDEN, exakte .ini-Werte
+    datei: tools/flow_test_Drucker4_PETG_HF_0.4mm.gcode
+
+
+DRUCKER 4 - Prusa XL 5T - Tool 2+3: 0.4mm Standard-Hotend (nozzle_high_flow=0)
+  dialect=xl, bed=360x360 (bestaetigt via printer-ini), tool=2 oder 3
+
+  PLA non-HF (XL) 0.4mm
+    quelle: PLA non-HF (XL).ini -- temp=220 bed=60  flow=6-27 (8x3)
+    status: VORHANDEN, exakte .ini-Werte
+    datei: tools/flow_test_Drucker4_PLA_nonHF_0.4mm.gcode
+
+  PETG non-HF (XL) 0.4mm
+    quelle: PETG non-HF (XL).ini -- temp=240 bed=80  flow=6-27 (8x3)
+    status: VORHANDEN, exakte .ini-Werte
+    datei: tools/flow_test_Drucker4_PETG_nonHF_0.4mm.gcode
+
+  TPU V2 (XL) 0.4mm
+    quelle: TPU V2 (XL).ini -- temp=230 bed=0 (unheated)
+    flow=6-27 (8x3) -- laut MD WEITERHIN ZU HOCH fuer TPU (reale Grenze
+    ~1.5-2.0), vor Nutzung mit --flow-start 0.75 --flow-step 0.25
+    --flow-count ~8 neu generieren
+    status: VORHANDEN, Temp/Bett jetzt korrekt, Flussbereich weiterhin
+    bekanntermassen falsch (separater, noch offener Punkt)
+    datei: tools/flow_test_Drucker4_TPU_0.4mm.gcode
+
+
+DRUCKER 4 - Prusa XL 5T - Tool 4: 0.25mm Duese (non-HF)
+  dialect=xl, bed=360x360, tool=4
+  status: NICHT GEPLANT (kein Filamentprofil fuer 0.25mm hinterlegt)
+
+
+DRUCKER 4 - Prusa XL 5T - 0.6mm Duese (manueller Tausch, "manchmal")
+  dialect=xl, bed=360x360
+  Hinweis: kein fester Tool-Slot, Duese wird bei Bedarf manuell auf einen
+  der Tools montiert. Sowohl HF- als auch non-HF-0.6mm-Profile vorhanden,
+  je nachdem auf welchem Tool die 0.6mm-Duese gerade sitzt.
+
+  PLA HF 0.6mm (XL)
+    quelle: PLA HF 0.6mm (XL).ini -- temp=220 bed=60  flow=6-27 (8x3)
+    status: VORHANDEN, exakte .ini-Werte
+    datei: tools/flow_test_Drucker4_PLA_HF_0.6mm.gcode
+
+  PETG HF 0.6mm (XL)
+    quelle: PETG HF 0.6mm (XL).ini -- temp=240 bed=80  flow=6-27 (8x3)
+    status: VORHANDEN, exakte .ini-Werte
+    datei: tools/flow_test_Drucker4_PETG_HF_0.6mm.gcode
+
+  PLA non-HF 0.6mm (XL)
+    quelle: PLA non-HF 0.6mm (XL).ini -- temp=220 bed=60  flow=6-27 (8x3)
+    status: VORHANDEN, exakte .ini-Werte
+    datei: tools/flow_test_Drucker4_PLA_nonHF_0.6mm.gcode
+
+  PETG non-HF 0.6mm (XL)
+    quelle: PETG non-HF 0.6mm (XL).ini -- temp=240 bed=80  flow=6-27 (8x3)
+    status: VORHANDEN, exakte .ini-Werte
+    datei: tools/flow_test_Drucker4_PETG_nonHF_0.6mm.gcode
+
+
+ZUSAMMENFASSUNG OFFENE PUNKTE
+  1. TPU (XL) hat weiterhin den falschen (zu hohen) Flussbereich
+     (6-27 statt ~0.75-2.5 mm3/s).
+  2. PETG (MK3) Flussbereich laut MD zu grob, Verfeinerung offen.
+  3. Alle Dateien sollten nach dem naechsten Druck erneut auf Klicken
+     geprueft werden, da jetzt ueberall die realen .ini-Temps verwendet
+     werden (vorher: einheitlich 210/230, Bett 60).
