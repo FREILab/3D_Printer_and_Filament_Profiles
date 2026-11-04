@@ -15,11 +15,11 @@ haben:
 |---|---|---|
 | PLA (MK3) | **7** | **per Pile-Test ermittelt 2026-08-30 ✅** |
 | PLA non-HF (MK4S) | 15 | Herstellerangabe dasfilament |
-| PLA non-HF (XL) 0.4mm | 15 | Herstellerangabe (übernommen, nicht auf XL getestet) |
-| PLA non-HF 0.6mm (XL) | 15.5 | Prusa-System-Default für 0.6mm, ungetestet |
+| PLA non-HF (XL) 0.4mm | 15 ⚠️ | Herstellerangabe (übernommen, nicht auf XL getestet) — **Neutest nötig, siehe Hinweis unten** |
+| PLA non-HF 0.6mm (XL) | 15.5 ⚠️ | Prusa-System-Default für 0.6mm, ungetestet — **Neutest nötig, siehe Hinweis unten** |
 | **PLA HF (MK4S)** | **21** | **experimentell ermittelt, wenig Beschwerden ✅** |
 | PLA HF (XL) 0.4mm | **21** ⚠️ | **Versuch seit 2026-11-04 bei 225°C** (Pile-Test 2026-09-09 ergab 15 bei 220°C ✅) |
-| PLA HF 0.6mm (XL) | 30 | Prusa-System-Default, ungetestet |
+| PLA HF 0.6mm (XL) | 30 ⚠️ | Prusa-System-Default, ungetestet — **Neutest nötig, siehe Hinweis unten** |
 | PETG (MK3) | **10** | **per Pile-Test ermittelt 2026-08-30 ✅** |
 | PETG HF (MK4S) | 22 | Prusa-System-Default „Generic PETG", ungetestet |
 | PETG non-HF (MK4S) | 9 | von XL non-HF übernommen (2026-08-03 neu gesplittet), ungetestet |
@@ -30,6 +30,28 @@ haben:
 | GreenTEC PRO (MK4S) | 15 | unbekannt/übernommen |
 | TPU (MK3-MK4S) | 1.5 | **per Testturm ermittelt, dokumentiert (U. Hornstein, 24.1.24) ✅** |
 | TPU (XL) | 2.0 | 2026-08-03 auf Materialobergrenze gesetzt, noch nicht auf XL getestet |
+
+> ⚠️ **Offen seit 2026-11-04: alle XL-PLA-Profile müssen neu getestet werden.**
+> Mit der Temperaturanhebung auf `PLA HF (XL)` 0.4mm (220 → 225°C, siehe Ergebnisse)
+> ist die Vergleichsbasis für PLA auf der XL hinfällig: jeder gemessene oder
+> geschätzte `filament_max_volumetric_speed` gilt immer nur für die Temperatur, bei
+> der er ermittelt wurde. Betroffen sind **alle vier** XL-PLA-Profile:
+>
+> - `FREILab PLA HF (XL)` (0.4mm) — läuft als Versuch mit 21 mm³/s @ 225°C
+> - `FREILab PLA HF 0.6mm (XL)` — 30 mm³/s, Systemwert, @ 220°C
+> - `FREILab PLA non-HF (XL)` (0.4mm) — 15 mm³/s, Herstellerwert, @ 220°C
+> - `FREILab PLA non-HF 0.6mm (XL)` — 15.5 mm³/s, Systemwert, @ 220°C
+>
+> Die XL-PLA-Profile stehen damit auf **uneinheitlichen Temperaturen** (einmal 225,
+> dreimal 220). Zum Neutest gehört deshalb die Vorentscheidung, ob 225°C für alle
+> XL-PLA-Profile übernommen wird — sonst werden vier Werte bei zwei verschiedenen
+> Temperaturen gemessen und sind untereinander nicht vergleichbar. Die Testdateien
+> in `tools/` tragen die Temperatur fest einkompiliert und müssen vorher mit den
+> passenden `--temp`-Werten neu generiert werden.
+>
+> Nicht betroffen: die PETG-Profile der XL und sämtliche MK3-/MK4S-Profile — dort
+> wurde nichts an der Temperatur geändert. Bei `PLA HF (MK4S)` (21 mm³/s @ 220°C)
+> ist nur die Frage offen, ob es die Anhebung mitgehen soll.
 
 Nur zwei Werte (PLA HF MK4S, TPU MK3/MK4S) sind nachweislich am eigenen
 Testturm ermittelt. Der Rest sind entweder Herstellerangaben (grundsätzlich
@@ -177,21 +199,26 @@ niedrig sein könnten, direkte Auswirkung auf Alltag):
    eigene Verifikation auf der MK4S-Hardware.
 3. `PLA HF (XL)` 0.4mm — ✅ Pile-Test erledigt 2026-09-09 (Wert 15 bei 220°C), aber seit
    2026-11-04 **wieder offen**: läuft als Versuch mit 21 mm³/s bei 225°C (siehe Ergebnisse).
-4. `TPU (XL)` — 2.0 ist nur eine Annahme („Nextruder ist stärker"), noch nicht
+4. **Alle vier XL-PLA-Profile** — nach der Temperaturanhebung vom 2026-11-04 (225°C
+   auf 0.4mm HF) ist keiner der vier Werte mehr bei einer einheitlichen Temperatur
+   belegt. Erst Temperaturfrage klären, dann der Reihe nach messen (Details im
+   Hinweisblock oben).
+5. `TPU (XL)` — 2.0 ist nur eine Annahme („Nextruder ist stärker"), noch nicht
    verifiziert. Bei Rutschen/Clicking sofort wieder senken.
 
 **Mittlere Priorität** (0.6mm-Düsen-Varianten, seltener genutzt, aber große
 Sprünge zum 0.4mm-Wert):
-5. `PLA HF 0.6mm (XL)` (30), `PETG HF 0.6mm (XL)` (33), `PETG non-HF 0.6mm (XL)` (17)
+6. `PETG HF 0.6mm (XL)` (33), `PETG non-HF 0.6mm (XL)` (17) — `PLA HF 0.6mm (XL)` (30)
+   ist mit den übrigen XL-PLA-Profilen nach Punkt 4 hochgerutscht.
 
 **Niedrige Priorität** (alte/konservative Werte, eher zu niedrig als
 riskant — hier bringt Testen Zeitersparnis, aber kein Sicherheitsrisiko):
-6. ~~`PETG (MK3)`~~ — ✅ erledigt 2026-08-30, neuer Wert 10 (siehe Ergebnisse).
-7. `GreenTEC PRO (MK4S)` — Wert unbekannter Herkunft, generell eher
+7. ~~`PETG (MK3)`~~ — ✅ erledigt 2026-08-30, neuer Wert 10 (siehe Ergebnisse).
+8. `GreenTEC PRO (MK4S)` — Wert unbekannter Herkunft, generell eher
    langsameres Material, aber ungeprüft.
 
 **Nicht ursprünglich priorisiert, aber erledigt:**
-8. ~~`PLA (MK3)`~~ — ✅ erledigt 2026-08-30, war fälschlich als "Herstellerangabe,
+9. ~~`PLA (MK3)`~~ — ✅ erledigt 2026-08-30, war fälschlich als "Herstellerangabe,
    vertrauenswürdig" eingestuft; tatsächlich deutlich zu hoch (15 → 7). Zeigt,
    dass auch Herstellerangaben nicht blind übernommen werden sollten.
 
