@@ -16,11 +16,11 @@ haben:
 | PLA (MK3) | **7** | **per Pile-Test ermittelt 2026-08-30 ✅** |
 | PLA 0.6mm (MK3.5) | 15 | Prusa-System „Generic PLA @MK3.5", ungetestet (Profil neu 2026-11-07) |
 | PLA non-HF (MK4S) | 15 | Herstellerangabe dasfilament |
-| PLA non-HF (XL) 0.4mm | 15 ⚠️ | Herstellerangabe (übernommen, nicht auf XL getestet) — **Neutest nötig, siehe Hinweis unten** |
-| PLA non-HF 0.6mm (XL) | 15.5 ⚠️ | Prusa-System-Default für 0.6mm, ungetestet — **Neutest nötig, siehe Hinweis unten** |
+| PLA non-HF (XL) 0.4mm | 15 ⚠️ | Herstellerangabe, nie auf XL getestet — **Neutest nötig** (Profil jetzt 225°C) |
+| PLA non-HF 0.6mm (XL) | 15.5 ⚠️ | Prusa-System-Default, ungetestet — **Neutest nötig** (Profil jetzt 225°C) |
 | **PLA HF (MK4S)** | **21** | **experimentell ermittelt, wenig Beschwerden ✅** |
-| PLA HF (XL) 0.4mm | **21** ⚠️ | **Versuch seit 2026-11-04 bei 225°C** (Pile-Test 2026-09-09 ergab 15 bei 220°C ✅) |
-| PLA HF 0.6mm (XL) | 30 ⚠️ | Prusa-System-Default, ungetestet — **Neutest nötig, siehe Hinweis unten** |
+| PLA HF (XL) 0.4mm | **21** ⚠️ | **Versuch bei 225°C**, Qualität 2026-11-07 als gut bewertet (Pile-Test 2026-09-09 ergab 15 bei 220°C ✅) |
+| PLA HF 0.6mm (XL) | 30 ⚠️ | Prusa-System-Default, ungetestet — **Neutest nötig** (Profil jetzt 225°C) |
 | PETG (MK3) | **10** | **per Pile-Test ermittelt 2026-08-30 ✅** |
 | PETG 0.6mm (MK3.5) | 14 | Prusa-System „Generic PETG @MK3.5 0.6", ungetestet (Profil neu 2026-11-07) |
 | PETG HF (MK4S) | 22 | Prusa-System-Default „Generic PETG", ungetestet |
@@ -33,27 +33,27 @@ haben:
 | TPU (MK3-MK4S) | 1.5 | **per Testturm ermittelt, dokumentiert (U. Hornstein, 24.1.24) ✅** |
 | TPU (XL) | 2.0 | 2026-08-03 auf Materialobergrenze gesetzt, noch nicht auf XL getestet |
 
-> ⚠️ **Offen seit 2026-11-04: alle XL-PLA-Profile müssen neu getestet werden.**
-> Mit der Temperaturanhebung auf `PLA HF (XL)` 0.4mm (220 → 225°C, siehe Ergebnisse)
-> ist die Vergleichsbasis für PLA auf der XL hinfällig: jeder gemessene oder
-> geschätzte `filament_max_volumetric_speed` gilt immer nur für die Temperatur, bei
-> der er ermittelt wurde. Betroffen sind **alle vier** XL-PLA-Profile:
+> ⚠️ **Alle vier XL-PLA-Profile stehen seit 2026-11-07 auf 225°C und muessen
+> neu getestet werden.** Ein `filament_max_volumetric_speed` gilt immer nur fuer die
+> Temperatur, bei der er ermittelt wurde — mit der Anhebung ist jeder bisherige Wert
+> fuer PLA auf der XL hinfaellig, auch der gemessene:
 >
-> - `FREILab PLA HF (XL)` (0.4mm) — läuft als Versuch mit 21 mm³/s @ 225°C
-> - `FREILab PLA HF 0.6mm (XL)` — 30 mm³/s, Systemwert, @ 220°C
-> - `FREILab PLA non-HF (XL)` (0.4mm) — 15 mm³/s, Herstellerwert, @ 220°C
-> - `FREILab PLA non-HF 0.6mm (XL)` — 15.5 mm³/s, Systemwert, @ 220°C
+> - `FREILab PLA HF (XL)` (0.4mm) — 21 mm³/s im Versuch, Pile-Test steht aus
+> - `FREILab PLA HF 0.6mm (XL)` — 30 mm³/s, Systemwert
+> - `FREILab PLA non-HF (XL)` (0.4mm) — 15 mm³/s, Herstellerwert
+> - `FREILab PLA non-HF 0.6mm (XL)` — 15.5 mm³/s, Systemwert
 >
-> Die XL-PLA-Profile stehen damit auf **uneinheitlichen Temperaturen** (einmal 225,
-> dreimal 220). Zum Neutest gehört deshalb die Vorentscheidung, ob 225°C für alle
-> XL-PLA-Profile übernommen wird — sonst werden vier Werte bei zwei verschiedenen
-> Temperaturen gemessen und sind untereinander nicht vergleichbar. Die Testdateien
-> in `tools/` tragen die Temperatur fest einkompiliert und müssen vorher mit den
-> passenden `--temp`-Werten neu generiert werden.
+> Die Temperaturen sind damit wieder einheitlich, die vier Messwerte untereinander
+> also vergleichbar. Alle vier Testdateien in `tools/` sind auf 225°C erzeugt.
 >
-> Nicht betroffen: die PETG-Profile der XL und sämtliche MK3-/MK4S-Profile — dort
-> wurde nichts an der Temperatur geändert. Bei `PLA HF (MK4S)` (21 mm³/s @ 220°C)
-> ist nur die Frage offen, ob es die Anhebung mitgehen soll.
+> Einschraenkung: die Qualitaetsbewertung bei 225°C (gut, 2026-11-07) lief nur auf
+> der 0.4mm-HF-Kombination. Fuer die 0.6mm-Duesen und das non-HF-Hotend ist die
+> Entscheidung uebertragen, nicht einzeln geprueft — bei Stringing oder haengenden
+> Ueberhaengen dort zuerst die Temperatur verdaechtigen.
+>
+> Nicht betroffen: die PETG-Profile der XL und saemtliche MK3-/MK4S-Profile. Bei
+> `PLA HF (MK4S)` (21 mm³/s @ 220°C) ist weiterhin offen, ob es die Anhebung
+> mitgehen soll.
 
 Nur zwei Werte (PLA HF MK4S, TPU MK3/MK4S) sind nachweislich am eigenen
 Testturm ermittelt. Der Rest sind entweder Herstellerangaben (grundsätzlich
@@ -283,6 +283,7 @@ aufgeteilt werden -- derzeit keyen sie nur auf Modell und Duesendurchmesser.
 | 2026-09-09 | PLA HF (XL) Kopf1, metallic rot | `tools/flow_test_Drucker4_PLA_HF_0.4mm.gcode` (220°C, korrigierte .ini-Temp), 3× Messreihe, Stufen 6–27 mm³/s (3er-Schritte) — siehe `measurements/Drucker 4` | Messreihe 1 (⚠️ Waage stand auf dem Heizbett, driftete massiv — Massewerte nicht belastbar): 6–18 mm³/s liefen durch (0,55–0,62 g), 21 mm³/s klickt/abgebrochen. Messreihen 2+3 (Waage korrekt neben dem Bett): konsistent 6/9/12/15/18 mm³/s sauber (Masse 0,56–0,58 g), **21 mm³/s klickt in beiden Reihen, abgebrochen**. Klick-Grenze bei 21 mm³/s über alle 3 Reihen reproduziert. | **Ergebnis:** sauber bis 18, Grenze bei 21. Mit Sicherheitsmarge auf 18 abgezogen → **neuer `filament_max_volumetric_speed` = 15 mm³/s** (bisher 21, von MK4S übernommen). Bereits in `filament/FREILab PLA HF (XL).ini` eingetragen (2026-09-09). |
 | 2026-09-09 | PETG HF (XL) Rubinrot | `tools/flow_test_Drucker4_PETG_HF_0.4mm.gcode` (245°C, korrigierte .ini-Temp), 3× Messreihe, Stufen 6–27 mm³/s (3er-Schritte) — siehe `measurements/Drucker 4` | Konsistent über alle 3 Messreihen: 6/9/12/15/18/21 mm³/s sauber (Masse 0,56–0,60 g), **24 mm³/s klickt in allen 3 Reihen, abgebrochen**. | **Ergebnis:** sauber bis 21, Grenze bei 24. Mit Sicherheitsmarge auf 21 abgezogen → **neuer `filament_max_volumetric_speed` = 18 mm³/s** (bisher 22, Prusa-System-Default). Bereits in `filament/FREILab PETG HF (XL).ini` eingetragen (2026-09-09). |
 | 2026-11-04 | PLA HF (XL) Kopf1 | Realdruck im 0.28mm-DRAFT-Profil (kein Pile-Test), Drucker 4 Kopf 1 | **Klicken im Realdruck** bei 220°C, mit **224°C** klickfrei (M. Tetard). In PrusaSlicer zeigte das Profil dabei `filament_max_volumetric_speed = 21` — also höchstwahrscheinlich noch der **Stand vor Commit `f408f05`** (09.09.2026, 21→ 15), der nie in den Slicer ausgerollt wurde. 21 mm³/s ist exakt die im Pile-Test gemessene Klickgrenze, womit das Klicken ohne Temperatureinfluss erklärt wäre. | **Noch kein Ergebnis, läuft als Versuch:** `temperature` 220 → **225** und `filament_max_volumetric_speed` 15 → **21** in `filament/FREILab PLA HF (XL).ini` (2026-11-04) — Frage: trägt die höhere Temperatur die 21 mm³/s, die bei 220°C reproduzierbar abrissen? ⚠️ Bewusst **oberhalb** der gemessenen Grenze, bis das bestätigt ist. Bei erneutem Klicken zurück auf 15 (dann war die alte Messung korrekt und nur der Rollout fehlte). Zu prüfen wäre anschließend, ob `PLA HF (MK4S)` (ebenfalls 21 bei 220°C) dieselbe Anhebung braucht. |
+| 2026-11-07 | PLA HF (XL) Kopf1 | Qualitäts-Testdruck bei 225°C (kein Flow-Test) | **Qualität gut** (M. Tetard) — keine Auffälligkeiten, die gegen die höhere Temperatur sprechen. | **Ergebnis:** 225°C wird für **alle vier** XL-PLA-Profile übernommen (`PLA HF 0.6mm`, `PLA non-HF`, `PLA non-HF 0.6mm` von 220 → 225), damit die vier mvs-Messungen untereinander vergleichbar sind. Bewertet wurde nur die 0.4mm-HF-Kombination; für die anderen drei ist die Temperatur übertragen, nicht geprüft. Die mvs-Werte selbst bleiben damit alle offen — Testdateien liegen auf 225°C bereit. |
 
 ## Vorgehen
 

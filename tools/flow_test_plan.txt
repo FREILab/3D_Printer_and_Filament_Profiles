@@ -133,9 +133,8 @@ DRUCKER 4 - Prusa XL 5T - Tool 2+3: 0.4mm Standard-Hotend (nozzle_high_flow=0)
 
   PLA non-HF (XL) 0.4mm
     quelle: PLA non-HF (XL).ini -- temp=225 bed=60  flow=6-27 (8x3)
-    status: NEU GENERIERT 2026-11-07 mit 225C. ACHTUNG: das .ini-Profil
-    steht noch auf 220C (siehe offener Punkt 4) -- Flussbereich breit
-    gelassen, da der Wert 15 eine ungepruefte Herstellerangabe ist
+    status: NEU GENERIERT 2026-11-07, Datei und .ini-Profil beide auf 225C.
+    Flussbereich breit gelassen, da der Wert 15 eine ungepruefte Herstellerangabe ist
     datei: tools/flow_test_Drucker4_PLA_nonHF_0.4mm.gcode
 
   PETG non-HF (XL) 0.4mm
@@ -168,9 +167,8 @@ DRUCKER 4 - Prusa XL 5T - 0.6mm Duese (manueller Tausch, "manchmal")
 
   PLA HF 0.6mm (XL)
     quelle: PLA HF 0.6mm (XL).ini -- temp=225 bed=60  flow=15-36 (8x3)
-    status: NEU GENERIERT 2026-11-07 mit 225C. ACHTUNG: das .ini-Profil
-    steht noch auf 220C (siehe offener Punkt 4). Flussbereich nach oben
-    verschoben, damit der behauptete Systemwert 30 ueberhaupt im Test
+    status: NEU GENERIERT 2026-11-07, Datei und .ini-Profil beide auf 225C.
+    Flussbereich nach oben verschoben, damit der behauptete Systemwert 30 ueberhaupt im Test
     liegt (6-27 haette ihn nie erreicht); untere Stufen entfallen, eine
     0.6mm-HF-Duese schafft 15 sicher
     datei: tools/flow_test_Drucker4_PLA_HF_0.6mm.gcode
@@ -182,8 +180,7 @@ DRUCKER 4 - Prusa XL 5T - 0.6mm Duese (manueller Tausch, "manchmal")
 
   PLA non-HF 0.6mm (XL)
     quelle: PLA non-HF 0.6mm (XL).ini -- temp=225 bed=60  flow=6-27 (8x3)
-    status: NEU GENERIERT 2026-11-07 mit 225C. ACHTUNG: das .ini-Profil
-    steht noch auf 220C (siehe offener Punkt 4)
+    status: NEU GENERIERT 2026-11-07, Datei und .ini-Profil beide auf 225C
     datei: tools/flow_test_Drucker4_PLA_nonHF_0.6mm.gcode
 
   PETG non-HF 0.6mm (XL)
@@ -198,13 +195,11 @@ ZUSAMMENFASSUNG OFFENE PUNKTE
   3. Alle Dateien sollten nach dem naechsten Druck erneut auf Klicken
      geprueft werden, da jetzt ueberall die realen .ini-Temps verwendet
      werden (vorher: einheitlich 210/230, Bett 60).
-  4. XL-PLA laeuft seit 2026-11-07 im 225C-Versuch: alle vier XL-PLA-
-     Testdateien sind auf 225C erzeugt, aber nur PLA HF (XL) 0.4mm hat
-     diese Temperatur auch im .ini-Profil -- die drei anderen stehen noch
-     auf 220C. Vor dem Test dort ebenfalls auf 225C umstellen, sonst
-     gehoert das Messergebnis zu einer Temperatur, die das Profil nicht
-     faehrt (siehe Druckgeschwindigkeit-Optimierung.md). Die Entscheidung
-     haengt an der Qualitaetsbewertung des laufenden 225C-Testdrucks.
+  4. ERLEDIGT 2026-11-07: alle vier XL-PLA-Profile stehen jetzt auf 225C,
+     Testdateien und Profile passen also zusammen. Grundlage war die
+     Qualitaetsbewertung des 225C-Testdrucks (gut, nur auf der
+     0.4mm-HF-Kombination geprueft). Die vier mvs-Werte sind damit alle
+     neu zu messen -- siehe Druckgeschwindigkeit-Optimierung.md.
   5. ERLEDIGT 2026-11-07: Drucker 1 hat eigene Profile und haengt nicht
      mehr an den XL-0.6mm-Profilen. Die 225C-Frage betrifft ihn damit
      nicht mehr automatisch -- falls PLA dort spaeter auch auf 225C soll,
