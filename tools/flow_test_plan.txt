@@ -134,7 +134,8 @@ DRUCKER 4 - Prusa XL 5T - Tool 2+3: 0.4mm Standard-Hotend (nozzle_high_flow=0)
   PLA non-HF (XL) 0.4mm
     quelle: PLA non-HF (XL).ini -- temp=225 bed=60  flow=6-27 (8x3)
     status: NEU GENERIERT 2026-11-07, Datei und .ini-Profil beide auf 225C.
-    Flussbereich breit gelassen, da der Wert 15 eine ungepruefte Herstellerangabe ist
+    Flussbereich breit gelassen, da der Wert 15 eine ungepruefte
+    Herstellerangabe ist
     datei: tools/flow_test_Drucker4_PLA_nonHF_0.4mm.gcode
 
   PETG non-HF (XL) 0.4mm
@@ -168,8 +169,8 @@ DRUCKER 4 - Prusa XL 5T - 0.6mm Duese (manueller Tausch, "manchmal")
   PLA HF 0.6mm (XL)
     quelle: PLA HF 0.6mm (XL).ini -- temp=225 bed=60  flow=15-36 (8x3)
     status: NEU GENERIERT 2026-11-07, Datei und .ini-Profil beide auf 225C.
-    Flussbereich nach oben verschoben, damit der behauptete Systemwert 30 ueberhaupt im Test
-    liegt (6-27 haette ihn nie erreicht); untere Stufen entfallen, eine
+    Flussbereich nach oben verschoben, damit der behauptete Systemwert 30
+    ueberhaupt im Test liegt (6-27 haette ihn nie erreicht); untere Stufen entfallen, eine
     0.6mm-HF-Duese schafft 15 sicher
     datei: tools/flow_test_Drucker4_PLA_HF_0.6mm.gcode
 
