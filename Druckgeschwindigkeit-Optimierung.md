@@ -26,19 +26,30 @@ Drucker, Gewichte je Pile).
 ## 1. Flussraten je Drucker
 
 Legende: ✅ am eigenen Material gemessen · ⚠️ geschätzt/übernommen, ungetestet
-· ⛔ kein Profil vorhanden
+· ⛔ kein Profil vorhanden oder nicht zugelassen
+
+**TPU nur auf Druckern ohne HF-Düse.** Zugelassen sind damit Drucker 2b und
+Drucker 3 sowie die Tools 2+3 der XL. Durchgesetzt wird das über
+`compatible_printers_condition`: `! nozzle_high_flow[0]` beim
+MK3-/MK4S-Profil, `printer_notes!~/.*HF_NOZZLE.*/` beim XL-Profil. Eine
+Einschränkung bleibt: auf der XL hängt die Bedingung am *Druckerprofil*, nicht
+am einzelnen Tool — in `Drucker 4 - non-HF` sind Tool 0+1 trotzdem als HF
+deklariert (`nozzle_high_flow = 1,1,0,0,0`). PrusaSlicer kann Filamentprofile
+nicht pro Tool einschränken, hier muss man also beim Zuweisen aufpassen.
 
 ### Drucker 1 — Prusa MK3.5, 0.6 mm
 
 Prusa bietet für die MK3.5 **keine** HF-Varianten an (weder Filament- noch
 Druckerprofile). `nozzle_high_flow = 1` in `printer/Drucker 1` ist eine lokale
-Setzung, die Profile hier unterscheiden deshalb nicht nach HF.
+Setzung — die PLA-/PETG-Profile dieser Maschine unterscheiden deshalb nicht
+nach HF. Wirkung hat die Setzung trotzdem: sie ist es, die TPU hier
+ausschließt.
 
 | Material | Wert | Status |
 |---|---|---|
 | PLA | ⚠️ 15 @220 °C | ungetestet, Prusa-Systemwert. Profil neu seit 2026-11-07. Testdatei bereit (9–25) |
 | PETG | ⚠️ 14 @240 °C | ungetestet, Prusa-Systemwert. Profil neu seit 2026-11-07. Testdatei bereit (8–24) |
-| TPU V2 | ✅ 1.5 @230 °C | am Testturm verifiziert (U. Hornstein, 24.01.2024), aber nicht auf dieser Maschine |
+| TPU V2 | ⛔ | **nicht zugelassen** — auf HF-Düsen wird kein TPU gedruckt (Vorgabe FREILab). Profilbedingung seit 2026-11-07 entsprechend eingeengt |
 | GreenTEC PRO | ⛔ | kein Profil — die Bedingung des GreenTEC-Profils trifft nur MK4-Modelle ohne HF-Düse |
 
 ### Drucker 2 — Prusa MK4S, 0.4 mm, HF-Hotend
@@ -47,7 +58,7 @@ Setzung, die Profile hier unterscheiden deshalb nicht nach HF.
 |---|---|---|
 | PETG HF | ✅ 20 @245 °C | gemessen 2026-11-07, 3× (melonengelb). Sauber bis 21, Massenabfall bei 24, Abriss bei 27. **Feinmessung 22–26 offen** |
 | PLA HF | ⚠️ 21 @220 °C | nie am Pile-Test verifiziert, nur „experimentell ermittelt, wenig Beschwerden". Testdatei bereit (6–27). Offen: ob auch hier 225 °C sinnvoll sind (auf der XL +17 % Durchsatz) |
-| TPU V2 | ✅ 1.5 @230 °C | Testturm-Wert, gleiche Hardwarefamilie |
+| TPU V2 | ⛔ | **nicht zugelassen** — HF-Düse, siehe Drucker 1 |
 | GreenTEC PRO | ⛔ | kein Profil — Bedingung schließt HF-Düsen aus, nur auf Drucker 2b |
 
 ### Drucker 2b — Prusa MK4S, 0.4 mm, Standard-Hotend
@@ -57,7 +68,7 @@ Setzung, die Profile hier unterscheiden deshalb nicht nach HF.
 | PLA non-HF | ⚠️ 15 @220 °C | Herstellerangabe dasfilament, ungetestet. Testdatei bereit (6–27) |
 | PETG non-HF | ⚠️ 9 @245 °C | 2026-08-03 von der XL übernommen, ungetestet. Testdatei bereit (6–27) |
 | GreenTEC PRO | ⚠️ 15 @220 °C | Herkunft unbekannt, ungetestet. Testdatei bereit (6–27) |
-| TPU V2 | ✅ 1.5 @230 °C | Testturm-Wert |
+| TPU V2 | ✅ 1.5 @230 °C | Testturm-Wert. Einer von zwei Druckern, auf denen TPU überhaupt zugelassen ist |
 
 ### Drucker 3 — Prusa MK3S, 0.4 mm
 
@@ -82,7 +93,7 @@ Setzung, die Profile hier unterscheiden deshalb nicht nach HF.
 |---|---|---|
 | PLA non-HF | ⚠️ 15 @225 °C | Herstellerangabe, nie auf der XL getestet. Testdatei bereit (6–27) |
 | PETG non-HF | ⚠️ 9 @240 °C | Prusa-Systemwert, ungetestet. Testdatei bereit (6–27) |
-| TPU V2 | ⚠️ 2.0 @230 °C | reine Annahme („Nextruder ist stärker"). Testdatei bereit (0.75–2.5) |
+| TPU V2 | ⚠️ 2.0 @230 °C | reine Annahme („Nextruder ist stärker"), ungetestet. Testdatei bereit (0.75–2.5). Nur unter dem Druckerprofil `Drucker 4 - non-HF` auswählbar |
 
 **0.6 mm — manueller Düsentausch, kein fester Tool-Slot**
 
@@ -139,7 +150,7 @@ erfolgt über `compatible_printers_condition` (Modell, Düsendurchmesser,
 | PETG HF 0.6mm (XL) | 4, 0.6 mm | 33 | 240 / 240 | 80 |
 | PLA non-HF 0.6mm (XL) | 4, 0.6 mm | 15.5 | 225 / 230 | 60 |
 | PETG non-HF 0.6mm (XL) | 4, 0.6 mm | 17 | 240 / 240 | 80 |
-| TPU V2 (MK3-MK4S) | 1, 2, 2b, 3 | 1.5 | 230 / 230 | aus |
+| TPU V2 (MK3-MK4S) | 2b, 3 | 1.5 | 230 / 230 | aus |
 | TPU V2 (XL) | 4, Tool 2+3 | 2.0 | 230 / 230 | aus |
 
 Die Begründung jedes einzelnen Werts steht in den `filament_notes` des
