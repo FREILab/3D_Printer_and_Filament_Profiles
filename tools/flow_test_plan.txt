@@ -170,8 +170,8 @@ DRUCKER 4 - Prusa XL 5T - 0.6mm Duese (manueller Tausch, "manchmal")
     quelle: PLA HF 0.6mm (XL).ini -- temp=225 bed=60  flow=15-36 (8x3)
     status: NEU GENERIERT 2026-11-07, Datei und .ini-Profil beide auf 225C.
     Flussbereich nach oben verschoben, damit der behauptete Systemwert 30
-    ueberhaupt im Test liegt (6-27 haette ihn nie erreicht); untere Stufen entfallen, eine
-    0.6mm-HF-Duese schafft 15 sicher
+    ueberhaupt im Test liegt (6-27 haette ihn nie erreicht); untere
+    Stufen entfallen, eine 0.6mm-HF-Duese schafft 15 sicher
     datei: tools/flow_test_Drucker4_PLA_HF_0.6mm.gcode
 
   PETG HF 0.6mm (XL)
