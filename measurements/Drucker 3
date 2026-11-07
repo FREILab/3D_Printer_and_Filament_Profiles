@@ -69,3 +69,15 @@ messreihe 3 2026-08-30
 ; Pile 2: 8.0mm3/s 0,59g
 ; Pile 3: 10.0mm3/s klickt 0,55g
 ; Pile 4: 12.0mm3/s abgebrochen
+
+
+mk3 PETG weiss
+testdatei: flow_test_Drucker3_PETG_0.4mm.gcode -- 240C, Bett 80C
+messreihe 1 2026-11-07
+;####### Flow Rate Sequence
+; Pile 1: 11.0mm3/s
+; Pile 2: 12.0mm3/s
+; Pile 3: 13.0mm3/s
+; Pile 4: 14.0mm3/s
+; Pile 5: 15.0mm3/s
+; Pile 6: 16.0mm3/s

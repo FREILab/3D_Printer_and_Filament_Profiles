@@ -1,0 +1,13 @@
+Drucker 2
+MK4S PETG HF melonengelb
+testdatei: flow_test_Drucker2_PETG_HF_0.4mm.gcode -- 245C, Bett 80C
+messreihe 1 2026-11-07
+;####### Flow Rate Sequence
+; Pile 1: 6.0mm3/s
+; Pile 2: 9.0mm3/s
+; Pile 3: 12.0mm3/s
+; Pile 4: 15.0mm3/s
+; Pile 5: 18.0mm3/s
+; Pile 6: 21.0mm3/s
+; Pile 7: 24.0mm3/s
+; Pile 8: 27.0mm3/s
