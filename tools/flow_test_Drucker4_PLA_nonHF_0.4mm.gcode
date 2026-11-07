@@ -22,7 +22,7 @@
 ; startFlow = 6.0
 ; flowOffset = 3.0
 ; flowSteps = 8
-; startTemp = 220.0
+; startTemp = 225.0
 ; tempOffset = 0.0
 ; tempSteps = 1
 ; direction = 1
@@ -37,7 +37,7 @@
 ; Pile 7: 24.0mm3/s
 ; Pile 8: 27.0mm3/s
 
-M104 S220 ; Set Nozzle Temperature
+M104 S225 ; Set Nozzle Temperature
 M140 S60 ; Set Bed Temperature
 G90
 G28 ; Move to home position
@@ -48,13 +48,13 @@ M83; set extruder to relative mode
 M190 S60 ; Set Bed Temperature & Wait
 M106 S0 ; Set Fan Speed
 
-;####### 220C
+;####### 225C
 G4 S0 ; Dwell
-M109 R220
+M109 R225
 
 ;####### Pile 1/8: 6.0mm3/s
 M400 ; wait for previous pile's moves to finish before updating display
-M117 220C // 6.0mm3/s
+M117 225C // 6.0mm3/s
 G0 X5 Y5 Z15.5 F6000
 G4 S20; Stabalize
 G0 Z0.3 ; Drop down
@@ -71,7 +71,7 @@ G92 E0 ; Reset Extruder
 
 ;####### Pile 2/8: 9.0mm3/s
 M400 ; wait for previous pile's moves to finish before updating display
-M117 220C // 9.0mm3/s
+M117 225C // 9.0mm3/s
 G0 X5 Y95 Z15.5 F6000
 G4 S20; Stabalize
 G0 Z0.3 ; Drop down
@@ -88,7 +88,7 @@ G92 E0 ; Reset Extruder
 
 ;####### Pile 3/8: 12.0mm3/s
 M400 ; wait for previous pile's moves to finish before updating display
-M117 220C // 12.0mm3/s
+M117 225C // 12.0mm3/s
 G0 X5 Y185 Z15.5 F6000
 G4 S20; Stabalize
 G0 Z0.3 ; Drop down
@@ -105,7 +105,7 @@ G92 E0 ; Reset Extruder
 
 ;####### Pile 4/8: 15.0mm3/s
 M400 ; wait for previous pile's moves to finish before updating display
-M117 220C // 15.0mm3/s
+M117 225C // 15.0mm3/s
 G0 X5 Y275 Z15.5 F6000
 G4 S20; Stabalize
 G0 Z0.3 ; Drop down
@@ -122,7 +122,7 @@ G92 E0 ; Reset Extruder
 
 ;####### Pile 5/8: 18.0mm3/s
 M400 ; wait for previous pile's moves to finish before updating display
-M117 220C // 18.0mm3/s
+M117 225C // 18.0mm3/s
 G0 X95 Y5 Z15.5 F6000
 G4 S20; Stabalize
 G0 Z0.3 ; Drop down
@@ -139,7 +139,7 @@ G92 E0 ; Reset Extruder
 
 ;####### Pile 6/8: 21.0mm3/s
 M400 ; wait for previous pile's moves to finish before updating display
-M117 220C // 21.0mm3/s
+M117 225C // 21.0mm3/s
 G0 X95 Y95 Z15.5 F6000
 G4 S20; Stabalize
 G0 Z0.3 ; Drop down
@@ -156,7 +156,7 @@ G92 E0 ; Reset Extruder
 
 ;####### Pile 7/8: 24.0mm3/s
 M400 ; wait for previous pile's moves to finish before updating display
-M117 220C // 24.0mm3/s
+M117 225C // 24.0mm3/s
 G0 X95 Y185 Z15.5 F6000
 G4 S20; Stabalize
 G0 Z0.3 ; Drop down
@@ -173,7 +173,7 @@ G92 E0 ; Reset Extruder
 
 ;####### Pile 8/8: 27.0mm3/s
 M400 ; wait for previous pile's moves to finish before updating display
-M117 220C // 27.0mm3/s
+M117 225C // 27.0mm3/s
 G0 X95 Y275 Z15.5 F6000
 G4 S20; Stabalize
 G0 Z0.3 ; Drop down

@@ -30,21 +30,25 @@ Offen bleibt weiterhin nur der Flussbereich (6-27 mm3/s), NICHT die Temp/
 Bett-Werte -- die sind jetzt ueberall korrekt.
 
 
-DRUCKER 1 - Prusa MK3.5 - 0.6mm Duese (HF-Hotend, nozzle_high_flow=1)
+DRUCKER 1 - Prusa MK3.5 - 0.6mm Duese
   dialect=single, bed=250x210 (bestaetigt via printer-ini)
-  Hinweis: aktuell existieren keine dedizierten "(MK3.5)" Filament-.ini-
-  Profile, nur die XL-0.6mm-Profile. Werte unten von dort uebernommen
-  (gleiche Duesenphysik).
+  Hinweis: seit 2026-11-07 gibt es eigene Profile fuer diese Maschine
+  (FREILab PLA/PETG 0.6mm (MK3.5)). Vorher war hier KEIN 0.6mm-Profil
+  auswaehlbar, es griffen die MK3S-0.4mm-Profile. Prusa bietet fuer die
+  MK3.5 keine HF-Varianten an, daher heissen Profile und Testdateien hier
+  ohne "HF".
 
-  PLA HF 0.6mm
-    quelle: PLA HF 0.6mm (XL).ini -- temp=220 bed=60  flow=6-27 (8x3)
-    status: VORHANDEN, exakte .ini-Werte
-    datei: tools/flow_test_Drucker1_PLA_HF_0.6mm.gcode
+  PLA 0.6mm (MK3.5)
+    quelle: PLA 0.6mm (MK3.5).ini -- temp=220 bed=60  flow=9-25 (9x2)
+    status: NEU GENERIERT 2026-11-07. Startwert im Profil ist 15 (Prusa-
+    Systemwert), der Testbereich deckt ihn mit Luft nach beiden Seiten ab
+    datei: tools/flow_test_Drucker1_PLA_0.6mm.gcode
 
-  PETG HF 0.6mm
-    quelle: PETG HF 0.6mm (XL).ini -- temp=240 bed=80  flow=6-27 (8x3)
-    status: VORHANDEN, exakte .ini-Werte
-    datei: tools/flow_test_Drucker1_PETG_HF_0.6mm.gcode
+  PETG 0.6mm (MK3.5)
+    quelle: PETG 0.6mm (MK3.5).ini -- temp=240 bed=80  flow=8-24 (9x2)
+    status: NEU GENERIERT 2026-11-07. Startwert im Profil ist 14 (Prusa-
+    Systemwert aus 'Generic PETG @MK3.5 0.6')
+    datei: tools/flow_test_Drucker1_PETG_0.6mm.gcode
 
 
 DRUCKER 2 - Prusa MK4S - 0.4mm Duese, HF-Hotend (nozzle_high_flow=1)
@@ -91,12 +95,12 @@ DRUCKER 3 - Prusa MK3S - 0.4mm Duese (non-HF, legacy Firmware)
 
   PETG (MK3)
     quelle: PETG (MK3).ini -- temp=240 bed=80
-    flow=6-27 (8x3) -- laut MD zu grob, Schwelle liegt zwischen 12-15
-    status: VORHANDEN, Bett auf 80C korrigiert (war 60C); bereits mit alter
-    Bett-Temp getestet (Ergebnis: mvs=10, siehe MD) -- Testergebnis bleibt
-    gueltig, Bett-Temp beeinflusst die Extrusion selbst kaum
+    flow=11-16 (6x1)
+    status: NEU GENERIERT 2026-11-07, verfeinert. Erster Test (6-27 in
+    3er-Schritten, Ergebnis mvs=10) zeigte die Schwelle zwischen 12
+    (sauber) und 15 (klickt) -- diese Luecke loest die neue Datei in
+    1er-Schritten auf. Potenzial: mvs 10 -> 12/13.
     datei: tools/flow_test_Drucker3_PETG_0.4mm.gcode
-    empfehlung: bei Neugenerierung auf 6-15 (5x2 oder aehnlich) verfeinern
 
   TPU V2 (MK3-MK4S)
     status: KEIN TEST NOETIG -- bereits am Testturm verifiziert (mvs=1.5,
@@ -107,9 +111,15 @@ DRUCKER 4 - Prusa XL 5T - Tool 0+1: 0.4mm HF-Hotend (nozzle_high_flow=1)
   dialect=xl, bed=360x360 (bestaetigt via printer-ini), tool=0 oder 1
 
   PLA HF (XL) 0.4mm
-    quelle: PLA HF (XL).ini -- temp=220 bed=60  flow=6-27 (8x3)
-    status: VORHANDEN, auf 220C korrigiert (Klicken beim Prime-Move bei
-    210C beobachtet -- reales .ini-Temp behebt es)
+    quelle: PLA HF (XL).ini -- temp=225 bed=60  flow=16-23 (8x1)
+    status: NEU GENERIERT 2026-11-07 fuer den 225C-Versuch (vorher 220C,
+    flow 6-27). Flussbereich bewusst eng und in 1er-Schritten: die bei
+    220C gemessene Grenze lag zwischen 18 (sauber) und 21 (Abriss), die
+    Erwartung liegt also im Bereich 17-19 -- dort braucht es volle
+    Aufloesung, nicht Breite. 16 als Massen-Referenz (15 war 2026-09-09
+    3x sauber), hoch bis 23, damit die Streitfrage 21 und etwas Luft
+    darueber drin sind. Frage: traegt 225C die 21 mm3/s, die bei 220C
+    reproduzierbar abrissen?
     datei: tools/flow_test_Drucker4_PLA_HF_0.4mm.gcode
 
   PETG HF (XL) 0.4mm
@@ -122,8 +132,10 @@ DRUCKER 4 - Prusa XL 5T - Tool 2+3: 0.4mm Standard-Hotend (nozzle_high_flow=0)
   dialect=xl, bed=360x360 (bestaetigt via printer-ini), tool=2 oder 3
 
   PLA non-HF (XL) 0.4mm
-    quelle: PLA non-HF (XL).ini -- temp=220 bed=60  flow=6-27 (8x3)
-    status: VORHANDEN, exakte .ini-Werte
+    quelle: PLA non-HF (XL).ini -- temp=225 bed=60  flow=6-27 (8x3)
+    status: NEU GENERIERT 2026-11-07 mit 225C. ACHTUNG: das .ini-Profil
+    steht noch auf 220C (siehe offener Punkt 4) -- Flussbereich breit
+    gelassen, da der Wert 15 eine ungepruefte Herstellerangabe ist
     datei: tools/flow_test_Drucker4_PLA_nonHF_0.4mm.gcode
 
   PETG non-HF (XL) 0.4mm
@@ -132,12 +144,14 @@ DRUCKER 4 - Prusa XL 5T - Tool 2+3: 0.4mm Standard-Hotend (nozzle_high_flow=0)
     datei: tools/flow_test_Drucker4_PETG_nonHF_0.4mm.gcode
 
   TPU V2 (XL) 0.4mm
-    quelle: TPU V2 (XL).ini -- temp=230 bed=0 (unheated)
-    flow=6-27 (8x3) -- laut MD WEITERHIN ZU HOCH fuer TPU (reale Grenze
-    ~1.5-2.0), vor Nutzung mit --flow-start 0.75 --flow-step 0.25
-    --flow-count ~8 neu generieren
-    status: VORHANDEN, Temp/Bett jetzt korrekt, Flussbereich weiterhin
-    bekanntermassen falsch (separater, noch offener Punkt)
+    quelle: TPU V2 (XL).ini -- temp=230 bed=0  flow=0.75-2.5 (8x0.25)
+    status: NEU GENERIERT 2026-11-07 mit brauchbarem Flussbereich (vorher
+    6-27, also komplett ausserhalb dessen was TPU kann). Deckt die
+    Annahme 2.0 und die MK3/MK4S-Messung 1.5 mit ein.
+    HINWEIS: --bed-temp 0 ist im cnc-kitchen-Pattern nicht wirklich "aus",
+    das Skript faellt auf 40C zurueck und wartet darauf (M190 S40).
+    Fuer die Extrusion unerheblich, aber "bed=0 unheated" ist streng
+    genommen falsch
     datei: tools/flow_test_Drucker4_TPU_0.4mm.gcode
 
 
@@ -153,8 +167,12 @@ DRUCKER 4 - Prusa XL 5T - 0.6mm Duese (manueller Tausch, "manchmal")
   je nachdem auf welchem Tool die 0.6mm-Duese gerade sitzt.
 
   PLA HF 0.6mm (XL)
-    quelle: PLA HF 0.6mm (XL).ini -- temp=220 bed=60  flow=6-27 (8x3)
-    status: VORHANDEN, exakte .ini-Werte
+    quelle: PLA HF 0.6mm (XL).ini -- temp=225 bed=60  flow=15-36 (8x3)
+    status: NEU GENERIERT 2026-11-07 mit 225C. ACHTUNG: das .ini-Profil
+    steht noch auf 220C (siehe offener Punkt 4). Flussbereich nach oben
+    verschoben, damit der behauptete Systemwert 30 ueberhaupt im Test
+    liegt (6-27 haette ihn nie erreicht); untere Stufen entfallen, eine
+    0.6mm-HF-Duese schafft 15 sicher
     datei: tools/flow_test_Drucker4_PLA_HF_0.6mm.gcode
 
   PETG HF 0.6mm (XL)
@@ -163,8 +181,9 @@ DRUCKER 4 - Prusa XL 5T - 0.6mm Duese (manueller Tausch, "manchmal")
     datei: tools/flow_test_Drucker4_PETG_HF_0.6mm.gcode
 
   PLA non-HF 0.6mm (XL)
-    quelle: PLA non-HF 0.6mm (XL).ini -- temp=220 bed=60  flow=6-27 (8x3)
-    status: VORHANDEN, exakte .ini-Werte
+    quelle: PLA non-HF 0.6mm (XL).ini -- temp=225 bed=60  flow=6-27 (8x3)
+    status: NEU GENERIERT 2026-11-07 mit 225C. ACHTUNG: das .ini-Profil
+    steht noch auf 220C (siehe offener Punkt 4)
     datei: tools/flow_test_Drucker4_PLA_nonHF_0.6mm.gcode
 
   PETG non-HF 0.6mm (XL)
@@ -174,9 +193,26 @@ DRUCKER 4 - Prusa XL 5T - 0.6mm Duese (manueller Tausch, "manchmal")
 
 
 ZUSAMMENFASSUNG OFFENE PUNKTE
-  1. TPU (XL) hat weiterhin den falschen (zu hohen) Flussbereich
-     (6-27 statt ~0.75-2.5 mm3/s).
-  2. PETG (MK3) Flussbereich laut MD zu grob, Verfeinerung offen.
+  1. ERLEDIGT 2026-11-07: TPU (XL) hat jetzt den Flussbereich 0.75-2.5.
+  2. ERLEDIGT 2026-11-07: PETG (MK3) auf 11-16 in 1er-Schritten verfeinert.
   3. Alle Dateien sollten nach dem naechsten Druck erneut auf Klicken
      geprueft werden, da jetzt ueberall die realen .ini-Temps verwendet
      werden (vorher: einheitlich 210/230, Bett 60).
+  4. XL-PLA laeuft seit 2026-11-07 im 225C-Versuch: alle vier XL-PLA-
+     Testdateien sind auf 225C erzeugt, aber nur PLA HF (XL) 0.4mm hat
+     diese Temperatur auch im .ini-Profil -- die drei anderen stehen noch
+     auf 220C. Vor dem Test dort ebenfalls auf 225C umstellen, sonst
+     gehoert das Messergebnis zu einer Temperatur, die das Profil nicht
+     faehrt (siehe Druckgeschwindigkeit-Optimierung.md). Die Entscheidung
+     haengt an der Qualitaetsbewertung des laufenden 225C-Testdrucks.
+  5. ERLEDIGT 2026-11-07: Drucker 1 hat eigene Profile und haengt nicht
+     mehr an den XL-0.6mm-Profilen. Die 225C-Frage betrifft ihn damit
+     nicht mehr automatisch -- falls PLA dort spaeter auch auf 225C soll,
+     ist das eine eigene Entscheidung.
+  6. ERLEDIGT 2026-11-07: Drucker 1 hat jetzt zwei eigene Profile
+     (FREILab PLA/PETG 0.6mm (MK3.5)) und die MK3-Profile wurden per
+     'and printer_model!~/MK3.5/' auf die MK3S eingeengt. Beide Werte
+     (15/14) sind Prusa-Systemwerte und noch ungetestet.
+  7. Mehrtemperatur-Modus des Generators (--temp-count > 1) ist defekt:
+     Gitterposition haengt nur an flow_idx, alle Temperaturbloecke drucken
+     auf dieselben 12 Stellen. Nicht gebraucht, daher nicht behoben.

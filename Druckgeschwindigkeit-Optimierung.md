@@ -14,6 +14,7 @@ haben:
 | Profil | Wert (mm³/s) | Herkunft |
 |---|---|---|
 | PLA (MK3) | **7** | **per Pile-Test ermittelt 2026-08-30 ✅** |
+| PLA 0.6mm (MK3.5) | 15 | Prusa-System „Generic PLA @MK3.5", ungetestet (Profil neu 2026-11-07) |
 | PLA non-HF (MK4S) | 15 | Herstellerangabe dasfilament |
 | PLA non-HF (XL) 0.4mm | 15 ⚠️ | Herstellerangabe (übernommen, nicht auf XL getestet) — **Neutest nötig, siehe Hinweis unten** |
 | PLA non-HF 0.6mm (XL) | 15.5 ⚠️ | Prusa-System-Default für 0.6mm, ungetestet — **Neutest nötig, siehe Hinweis unten** |
@@ -21,6 +22,7 @@ haben:
 | PLA HF (XL) 0.4mm | **21** ⚠️ | **Versuch seit 2026-11-04 bei 225°C** (Pile-Test 2026-09-09 ergab 15 bei 220°C ✅) |
 | PLA HF 0.6mm (XL) | 30 ⚠️ | Prusa-System-Default, ungetestet — **Neutest nötig, siehe Hinweis unten** |
 | PETG (MK3) | **10** | **per Pile-Test ermittelt 2026-08-30 ✅** |
+| PETG 0.6mm (MK3.5) | 14 | Prusa-System „Generic PETG @MK3.5 0.6", ungetestet (Profil neu 2026-11-07) |
 | PETG HF (MK4S) | 22 | Prusa-System-Default „Generic PETG", ungetestet |
 | PETG non-HF (MK4S) | 9 | von XL non-HF übernommen (2026-08-03 neu gesplittet), ungetestet |
 | PETG HF (XL) 0.4mm | **18** | **per Pile-Test ermittelt 2026-09-09 ✅** |
@@ -187,40 +189,89 @@ und -Betttemperatur. Bei Wechsel des Filamentherstellers oder Änderung der
 neu
 generiert werden.
 
-## Priorisierte Testreihenfolge
+## Teststatus aller Drucker (Stand 2026-11-07)
 
-**Hohe Priorität** (Werte, die aktuell unbegründet hoch *oder* unbegründet
-niedrig sein könnten, direkte Auswirkung auf Alltag):
-1. `PETG HF (MK4S)` — 22 mm³/s ist ein reiner Prusa-Systemwert für generisches
-   PETG, nie für dasfilament-PETG verifiziert. Meistgenutztes Material auf dem
-   meistgenutzten Drucker. (~~`PETG HF (XL)`~~ — ✅ erledigt 2026-09-09, neuer
-   Wert 18, siehe Ergebnisse; MK4S-Variante steht noch aus, eigene Hardware.)
-2. `PETG non-HF (MK4S)` — gerade erst (grob) von der XL übernommen, verdient
-   eigene Verifikation auf der MK4S-Hardware.
-3. `PLA HF (XL)` 0.4mm — ✅ Pile-Test erledigt 2026-09-09 (Wert 15 bei 220°C), aber seit
-   2026-11-04 **wieder offen**: läuft als Versuch mit 21 mm³/s bei 225°C (siehe Ergebnisse).
-4. **Alle vier XL-PLA-Profile** — nach der Temperaturanhebung vom 2026-11-04 (225°C
-   auf 0.4mm HF) ist keiner der vier Werte mehr bei einer einheitlichen Temperatur
-   belegt. Erst Temperaturfrage klären, dann der Reihe nach messen (Details im
-   Hinweisblock oben).
-5. `TPU (XL)` — 2.0 ist nur eine Annahme („Nextruder ist stärker"), noch nicht
-   verifiziert. Bei Rutschen/Clicking sofort wieder senken.
+Ziel ist ein vollstaendig verifiziertes Profilset: fuer jede Drucker-/Duesen-/
+Material-Kombination ein gemessener `filament_max_volumetric_speed`. Weil die
+Drucke beaufsichtigt werden muessen, ist Druckzeit hier ein echter Kostenfaktor
+— ungepruefte, zu niedrige Werte kosten also genauso wie zu hohe.
 
-**Mittlere Priorität** (0.6mm-Düsen-Varianten, seltener genutzt, aber große
-Sprünge zum 0.4mm-Wert):
-6. `PETG HF 0.6mm (XL)` (33), `PETG non-HF 0.6mm (XL)` (17) — `PLA HF 0.6mm (XL)` (30)
-   ist mit den übrigen XL-PLA-Profilen nach Punkt 4 hochgerutscht.
+| # | Drucker | Profil | Wert | Herkunft | Testdatei | offen? |
+|---|---|---|---|---|---|---|
+| 1 | 2 (MK4S HF) | PETG HF (MK4S) | 22 | Prusa-System, generisches PETG | `flow_test_Drucker2_PETG_HF_0.4mm.gcode` | **ja, Prio 1** |
+| 2 | 4 (XL HF, Kopf 0/1) | PLA HF (XL) | 21 @225°C | Versuch seit 2026-11-04 | `flow_test_Drucker4_PLA_HF_0.4mm.gcode` (16–23) | **ja, laeuft** |
+| 3 | 2b (MK4S non-HF) | PLA non-HF (MK4S) | 15 | Herstellerangabe | `flow_test_Drucker2b_PLA_nonHF_0.4mm.gcode` | ja |
+| 4 | 2b (MK4S non-HF) | PETG non-HF (MK4S) | 9 | von XL uebernommen | `flow_test_Drucker2b_PETG_nonHF_0.4mm.gcode` | ja |
+| 5 | 2b (MK4S non-HF) | GreenTEC PRO (MK4S) | 15 | unbekannt | `flow_test_Drucker2b_GreenTEC_PRO_0.4mm.gcode` | ja |
+| 6 | 4 (XL, 0.6mm manuell) | PLA HF 0.6mm (XL) | 30 | Prusa-System | `flow_test_Drucker4_PLA_HF_0.6mm.gcode` (15–36) | ja |
+| 7 | 4 (XL, 0.6mm manuell) | PETG HF 0.6mm (XL) | 33 | Prusa-System | `flow_test_Drucker4_PETG_HF_0.6mm.gcode` | ja |
+| 8 | 4 (XL, 0.6mm manuell) | PETG non-HF 0.6mm (XL) | 17 | Prusa-System | `flow_test_Drucker4_PETG_nonHF_0.6mm.gcode` | ja |
+| 9 | 4 (XL, 0.6mm manuell) | PLA non-HF 0.6mm (XL) | 15.5 | Prusa-System | `flow_test_Drucker4_PLA_nonHF_0.6mm.gcode` | ja |
+| 10 | 4 (XL non-HF, Kopf 2/3) | PLA non-HF (XL) | 15 | Herstellerangabe | `flow_test_Drucker4_PLA_nonHF_0.4mm.gcode` | ja |
+| 11 | 4 (XL non-HF, Kopf 2/3) | PETG non-HF (XL) | 9 | Prusa-System | `flow_test_Drucker4_PETG_nonHF_0.4mm.gcode` | ja |
+| 12 | 4 (XL non-HF, Kopf 2/3) | TPU V2 (XL) | 2.0 | Annahme | `flow_test_Drucker4_TPU_0.4mm.gcode` (0.75–2.5) | ja |
+| 13 | 3 (MK3S) | PETG (MK3) | 10 | Pile-Test ✅ | `flow_test_Drucker3_PETG_0.4mm.gcode` (11–16) | nur Feinmessung |
+| 14 | 3 (MK3S) | PLA (MK3) | 7 | Pile-Test ✅ | `flow_test_Drucker3_PLA_0.4mm.gcode` | nur Feinmessung |
+| — | 4 (XL HF) | PETG HF (XL) | 18 | Pile-Test ✅ 2026-09-09 | — | nein |
+| — | 3/2/2b | TPU V2 (MK3-MK4S) | 1.5 | Testturm ✅ | — | nein |
+| 15 | 1 (MK3.5 0.6mm) | PETG 0.6mm (MK3.5) | 14 | Prusa-System, Profil neu | `flow_test_Drucker1_PETG_0.6mm.gcode` (8–24) | ja |
+| 16 | 1 (MK3.5 0.6mm) | PLA 0.6mm (MK3.5) | 15 | Prusa-System, Profil neu | `flow_test_Drucker1_PLA_0.6mm.gcode` (9–25) | ja |
 
-**Niedrige Priorität** (alte/konservative Werte, eher zu niedrig als
-riskant — hier bringt Testen Zeitersparnis, aber kein Sicherheitsrisiko):
-7. ~~`PETG (MK3)`~~ — ✅ erledigt 2026-08-30, neuer Wert 10 (siehe Ergebnisse).
-8. `GreenTEC PRO (MK4S)` — Wert unbekannter Herkunft, generell eher
-   langsameres Material, aber ungeprüft.
+Empfohlene Reihenfolge: nach Nummer. Oben stehen die Werte, die entweder
+reine Systemschaetzungen auf viel genutzter Hardware sind (1) oder gerade
+aktiv in Frage stehen (2); die 0.6mm-Gruppe (6–9) hat die groessten
+unbelegten Spruenge nach oben, da liegt das meiste Zeitpotenzial. 13 und 14
+sind bereits gemessen, eine Feinmessung koennte dort noch 1–3 mm3/s heben.
 
-**Nicht ursprünglich priorisiert, aber erledigt:**
-9. ~~`PLA (MK3)`~~ — ✅ erledigt 2026-08-30, war fälschlich als "Herstellerangabe,
-   vertrauenswürdig" eingestuft; tatsächlich deutlich zu hoch (15 → 7). Zeigt,
-   dass auch Herstellerangaben nicht blind übernommen werden sollten.
+### Drucker 1 (MK3.5, 0.6mm): Profile angelegt 2026-11-07
+
+Vorher war auf dieser Maschine **kein einziges 0.6mm-Filamentprofil
+auswaehlbar**: alle vier 0.6mm-Profile verlangen per
+`compatible_printers_condition` ein `printer_notes=~/.*XL.*/`. Gegriffen haben
+deshalb `PLA (MK3)` und `PETG (MK3)` -- ihre Bedingung
+(`printer_notes!~/.*PG.*/`) traf neben der MK3S auch auf die MK3.5 zu, weil
+dort das `PG`-Keyword fehlt. Das sind die auf **MK3S/0.4mm** vermessenen
+Profile mit 7 bzw. 10 mm3/s bei 210/240 C.
+
+Neu angelegt:
+
+- `filament/FREILab PLA 0.6mm (MK3.5).ini` -- erbt `Generic PLA @MK3.5`,
+  220/230 C, Bett 60, mvs 15 (Systemwert)
+- `filament/FREILab PETG 0.6mm (MK3.5).ini` -- erbt
+  `Generic PETG @MK3.5 0.6`, 240 C, Bett 80, mvs 14 (Systemwert)
+
+Beide Profile enthalten bewusst nur die FREILab-Abweichungen, alles andere
+kommt ueber `inherits`. Die XL-0.6mm-Profile waren als Vorlage **nicht**
+brauchbar: deren `start_filament_gcode` setzt `M572`/`M142` fuer den Nextruder
+der XL. Zusaetzlich wurde die Bedingung von `PLA (MK3)`/`PETG (MK3)` um
+`and printer_model!~/MK3.5/` erweitert, damit sie dort nicht mehr auftauchen.
+
+Zur Groessenordnung, korrigiert: Prusa bietet fuer die MK3.5 **keine
+HF-Varianten** an (es gibt weder `@MK3.5 HF0.6`-Filament- noch
+HF-Druckerprofile; `nozzle_high_flow = 1` in `printer/Drucker 1` ist eine
+lokale Setzung). Der Gewinn ist daher 10 -> 14 bei PETG und 7 -> 15 bei PLA,
+also etwa Faktor 1.4 bzw. 2 -- nicht Faktor 3. Die 30/33 mm3/s der
+XL-0.6mm-Profile sind Werte fuer den XL-Nextruder und gelten hier nicht,
+auch wenn die Duese dieselbe Bohrung hat.
+
+Offen bleibt: ob die 0.6mm-Duese auf Drucker 1 dauerhaft die einzige bleibt.
+Kommt dort je eine non-HF-0.6mm-Duese zum Einsatz, muessten die Profile
+aufgeteilt werden -- derzeit keyen sie nur auf Modell und Duesendurchmesser.
+
+### Bekannte Schwaechen der Testdateien
+
+- `--bed-temp 0` (dokumentiert als „disabled") faellt im cnc-kitchen-Pattern
+  auf 40°C zurueck und wartet darauf (`M190 S40`), siehe
+  `generate_flow_rate_test.py:137,144`. Betrifft nur die TPU-(XL)-Datei, deren
+  Profil `bed_temperature = 0` hat. Auf das Extrusionsergebnis hat das
+  praktisch keinen Einfluss, die Plan-Angabe „bed=0 unheated" ist aber falsch.
+- Der Mehrtemperatur-Modus (`--temp-count > 1`) ist unbrauchbar: die
+  Gitterposition wird in `generate_flow_rate_test.py:157-160` nur aus
+  `flow_idx` berechnet, sodass jeder Temperaturblock seine Piles auf dieselben
+  Stellen setzt. Ausserdem gibt es nur 12 Positionen (3x4), `--flow-count > 12`
+  laeuft in einen IndexError. Nicht behoben, weil fuer die offenen Tests nicht
+  gebraucht — ein 220-vs-225-Vergleich in einem Druck waere damit aber moeglich.
+
 
 ## Ergebnisse
 
