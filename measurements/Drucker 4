@@ -71,16 +71,38 @@ messreihe 3 2026-09-09
 ; Pile 7: 24.0mm3/s klickt, abgebrochen
 ; Pile 8: 27.0mm3/s
 
-
 XL PLA HF Kopf1 metallic rot
 testdatei: flow_test_Drucker4_PLA_HF_0.4mm.gcode -- 225C, Bett 60C
+
 messreihe 1 2026-11-07
 ;####### Flow Rate Sequence
-; Pile 1: 16.0mm3/s
-; Pile 2: 17.0mm3/s
-; Pile 3: 18.0mm3/s
-; Pile 4: 19.0mm3/s
-; Pile 5: 20.0mm3/s
-; Pile 6: 21.0mm3/s
-; Pile 7: 22.0mm3/s
-; Pile 8: 23.0mm3/s
+; Pile 1: 16.0mm3/s 0,58g
+; Pile 2: 17.0mm3/s 0,57g
+; Pile 3: 18.0mm3/s 0,58g
+; Pile 4: 19.0mm3/s 0,56g
+; Pile 5: 20.0mm3/s 0,58g
+; Pile 6: 21.0mm3/s 0,58g
+; Pile 7: 22.0mm3/s 0,56g
+; Pile 8: 23.0mm3/s 0,47g klickt
+
+messreihe 2 2026-11-07
+;####### Flow Rate Sequence
+; Pile 1: 16.0mm3/s 0,59g
+; Pile 2: 17.0mm3/s 0,57g
+; Pile 3: 18.0mm3/s 0,59g
+; Pile 4: 19.0mm3/s 0,57g
+; Pile 5: 20.0mm3/s 0,58g
+; Pile 6: 21.0mm3/s 0,57g
+; Pile 7: 22.0mm3/s 0,55g
+; Pile 8: 23.0mm3/s 0,23g klickt, abgebrochen
+
+messreihe 3 2026-11-07
+;####### Flow Rate Sequence
+; Pile 1: 16.0mm3/s 0,59g
+; Pile 2: 17.0mm3/s 0,57g
+; Pile 3: 18.0mm3/s 0,58g
+; Pile 4: 19.0mm3/s 0,58g
+; Pile 5: 20.0mm3/s 0,56g
+; Pile 6: 21.0mm3/s 0,57g
+; Pile 7: 22.0mm3/s 0,55g
+; Pile 8: 23.0mm3/s 0,20g klickt, abgebrochen

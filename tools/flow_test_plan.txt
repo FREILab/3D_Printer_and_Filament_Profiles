@@ -61,8 +61,16 @@ DRUCKER 2 - Prusa MK4S - 0.4mm Duese, HF-Hotend (nozzle_high_flow=1)
 
   PETG HF (MK4S)
     quelle: PETG HF (MK4S).ini -- temp=245 bed=80  flow=6-27 (8x3)
-    status: VORHANDEN, exakte .ini-Werte
+    status: GETESTET 2026-11-07 (melonengelb, 3x): sauber 6-21, Massen-
+    abfall bei 24, Klicken/Abbruch bei 27 -> mvs 22 auf 20 gesenkt.
+    Decke liegt zwischen 21 und 24, Feinmessung laeuft noch
     datei: tools/flow_test_Drucker2_PETG_HF_0.4mm.gcode
+
+  PETG HF (MK4S) -- Feinmessung
+    quelle: PETG HF (MK4S).ini -- temp=245 bed=80  flow=22-26 (5x1)
+    status: NEU GENERIERT 2026-11-07, loest die Luecke zwischen der
+    letzten sauberen Stufe (21) und dem Massenabfall (24) auf
+    datei: tools/flow_test_Drucker2_PETG_HF_0.4mm_fein.gcode
 
 
 DRUCKER 2b - Prusa MK4S - 0.4mm Duese, Standard-Hotend (nozzle_high_flow=0)
@@ -96,11 +104,20 @@ DRUCKER 3 - Prusa MK3S - 0.4mm Duese (non-HF, legacy Firmware)
   PETG (MK3)
     quelle: PETG (MK3).ini -- temp=240 bed=80
     flow=11-16 (6x1)
-    status: NEU GENERIERT 2026-11-07, verfeinert. Erster Test (6-27 in
-    3er-Schritten, Ergebnis mvs=10) zeigte die Schwelle zwischen 12
-    (sauber) und 15 (klickt) -- diese Luecke loest die neue Datei in
-    1er-Schritten auf. Potenzial: mvs 10 -> 12/13.
+    status: GETESTET 2026-11-07 mit PETG WEISS (3x): kein Klicken auf
+    irgendeiner Stufe, Decke nicht erreicht. Widerspruch zum Test vom
+    2026-08-30 mit PETG SCHWARZ bei Bett 60C, wo 15 reproduzierbar
+    klickte. Profilwert daher nur 10 -> 12 (hoechste Stufe, die beide
+    Messungen tragen). Diese Datei bleibt fuer die Wiederholung mit
+    SCHWARZ bei Bett 80C -- damit laesst sich trennen, ob Charge/Farbe
+    oder die Betttemperatur den Unterschied macht
     datei: tools/flow_test_Drucker3_PETG_0.4mm.gcode
+
+  PETG (MK3) -- hoeherer Bereich
+    quelle: PETG (MK3).ini -- temp=240 bed=80  flow=16-24 (5x2)
+    status: NEU GENERIERT 2026-11-07, sucht die Decke fuer PETG weiss
+    oberhalb von 16
+    datei: tools/flow_test_Drucker3_PETG_0.4mm_hoch.gcode
 
   TPU V2 (MK3-MK4S)
     status: KEIN TEST NOETIG -- bereits am Testturm verifiziert (mvs=1.5,
@@ -191,24 +208,36 @@ DRUCKER 4 - Prusa XL 5T - 0.6mm Duese (manueller Tausch, "manchmal")
 
 
 ZUSAMMENFASSUNG OFFENE PUNKTE
-  1. ERLEDIGT 2026-11-07: TPU (XL) hat jetzt den Flussbereich 0.75-2.5.
-  2. ERLEDIGT 2026-11-07: PETG (MK3) auf 11-16 in 1er-Schritten verfeinert.
-  3. Alle Dateien sollten nach dem naechsten Druck erneut auf Klicken
-     geprueft werden, da jetzt ueberall die realen .ini-Temps verwendet
-     werden (vorher: einheitlich 210/230, Bett 60).
-  4. ERLEDIGT 2026-11-07: alle vier XL-PLA-Profile stehen jetzt auf 225C,
-     Testdateien und Profile passen also zusammen. Grundlage war die
-     Qualitaetsbewertung des 225C-Testdrucks (gut, nur auf der
-     0.4mm-HF-Kombination geprueft). Die vier mvs-Werte sind damit alle
-     neu zu messen -- siehe Druckgeschwindigkeit-Optimierung.md.
-  5. ERLEDIGT 2026-11-07: Drucker 1 hat eigene Profile und haengt nicht
-     mehr an den XL-0.6mm-Profilen. Die 225C-Frage betrifft ihn damit
-     nicht mehr automatisch -- falls PLA dort spaeter auch auf 225C soll,
-     ist das eine eigene Entscheidung.
-  6. ERLEDIGT 2026-11-07: Drucker 1 hat jetzt zwei eigene Profile
-     (FREILab PLA/PETG 0.6mm (MK3.5)) und die MK3-Profile wurden per
-     'and printer_model!~/MK3.5/' auf die MK3S eingeengt. Beide Werte
-     (15/14) sind Prusa-Systemwerte und noch ungetestet.
-  7. Mehrtemperatur-Modus des Generators (--temp-count > 1) ist defekt:
-     Gitterposition haengt nur an flow_idx, alle Temperaturbloecke drucken
-     auf dieselben 12 Stellen. Nicht gebraucht, daher nicht behoben.
+  1. PETG (MK3): Decke fuer WEISS nicht erreicht (Datei fuer 16-24 liegt
+     bereit) und Wiederholung mit SCHWARZ bei Bett 80C offen. Erst damit
+     ist klar, ob Charge/Farbe oder die Betttemperatur den Unterschied
+     zum Test vom 2026-08-30 macht. Profilwert 12 ist bis dahin der
+     Kompromiss, den beide Messungen tragen.
+  2. PETG HF (MK4S): Feinmessung 22-26 offen, die Decke liegt zwischen
+     21 und 24.
+  3. PETG HF (XL): steht auf 18 bei demselben Messmuster, fuer das die
+     MK4S jetzt 20 bekommen hat (sauber bis 21, Auffaelligkeit bei 24).
+     Auf der XL klickte 24 allerdings hart, auf der MK4S faellt nur die
+     Masse. Eine Feinmessung 22-26 koennte 18 -> 20 heben, Datei ist
+     noch nicht erzeugt.
+  4. Noch komplett ungetestet: die vier XL-0.6mm-Profile, die drei
+     MK4S-non-HF-Profile, beide MK3.5-Profile, XL-non-HF-0.4mm
+     (PLA/PETG) und TPU (XL). Alle Dateien liegen bereit, Reihenfolge
+     siehe Druckgeschwindigkeit-Optimierung.md.
+  5. PLA (MK3): Feinmessung 8-11 moeglich (Grauzone bei 10 war 1 von 3
+     Reihen sauber), Datei noch nicht erzeugt. Geringster Gewinn im Set.
+  6. Mehrtemperatur-Modus des Generators (--temp-count > 1) ist defekt:
+     Gitterposition haengt nur an flow_idx, alle Temperaturbloecke
+     drucken auf dieselben 12 Stellen. Nicht gebraucht, daher nicht
+     behoben.
+
+ZULETZT ERLEDIGT (2026-11-07)
+  - TPU (XL): Flussbereich von 6-27 auf 0.75-2.5 korrigiert.
+  - Alle vier XL-PLA-Profile auf 225C, Testdateien passend erzeugt.
+  - Drucker 1: eigene Profile (FREILab PLA/PETG 0.6mm (MK3.5)), die
+    MK3-Profile per 'and printer_model!~/MK3.5/' auf die MK3S eingeengt.
+  - Gemessen: PLA HF (XL) bei 225C (mvs bleibt 21, Decke 21, Abriss 23),
+    PETG HF (MK4S) 22 -> 20, PETG (MK3) weiss 10 -> 12.
+  - Seit 2026-09-09 nutzen alle Dateien die realen .ini-Temps (vorher
+    pauschal 210/230, Bett 60). Ergebnisse von vor diesem Datum sind
+    entsprechend zu pruefen.

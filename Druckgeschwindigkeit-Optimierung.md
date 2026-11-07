@@ -19,11 +19,11 @@ haben:
 | PLA non-HF (XL) 0.4mm | 15 ⚠️ | Herstellerangabe, nie auf XL getestet — **Neutest nötig** (Profil jetzt 225°C) |
 | PLA non-HF 0.6mm (XL) | 15.5 ⚠️ | Prusa-System-Default, ungetestet — **Neutest nötig** (Profil jetzt 225°C) |
 | **PLA HF (MK4S)** | **21** | **experimentell ermittelt, wenig Beschwerden ✅** |
-| PLA HF (XL) 0.4mm | **21** ⚠️ | **Versuch bei 225°C**, Qualität 2026-11-07 als gut bewertet (Pile-Test 2026-09-09 ergab 15 bei 220°C ✅) |
+| PLA HF (XL) 0.4mm | **21** | **per Pile-Test bei 225°C ermittelt 2026-11-07 ✅** |
 | PLA HF 0.6mm (XL) | 30 ⚠️ | Prusa-System-Default, ungetestet — **Neutest nötig** (Profil jetzt 225°C) |
-| PETG (MK3) | **10** | **per Pile-Test ermittelt 2026-08-30 ✅** |
+| PETG (MK3) | **12** | **zwei Pile-Tests, 12 trägt beide ✅** (schwarz 2026-08-30, weiß 2026-11-07) |
 | PETG 0.6mm (MK3.5) | 14 | Prusa-System „Generic PETG @MK3.5 0.6", ungetestet (Profil neu 2026-11-07) |
-| PETG HF (MK4S) | 22 | Prusa-System-Default „Generic PETG", ungetestet |
+| PETG HF (MK4S) | **20** | **per Pile-Test ermittelt 2026-11-07 ✅** (Feinmessung 22–26 steht aus) |
 | PETG non-HF (MK4S) | 9 | von XL non-HF übernommen (2026-08-03 neu gesplittet), ungetestet |
 | PETG HF (XL) 0.4mm | **18** | **per Pile-Test ermittelt 2026-09-09 ✅** |
 | PETG HF 0.6mm (XL) | 33 | Prusa-System-Default, ungetestet |
@@ -196,32 +196,47 @@ Material-Kombination ein gemessener `filament_max_volumetric_speed`. Weil die
 Drucke beaufsichtigt werden muessen, ist Druckzeit hier ein echter Kostenfaktor
 — ungepruefte, zu niedrige Werte kosten also genauso wie zu hohe.
 
-| # | Drucker | Profil | Wert | Herkunft | Testdatei | offen? |
-|---|---|---|---|---|---|---|
-| 1 | 2 (MK4S HF) | PETG HF (MK4S) | 22 | Prusa-System, generisches PETG | `flow_test_Drucker2_PETG_HF_0.4mm.gcode` | **ja, Prio 1** |
-| 2 | 4 (XL HF, Kopf 0/1) | PLA HF (XL) | 21 @225°C | Versuch seit 2026-11-04 | `flow_test_Drucker4_PLA_HF_0.4mm.gcode` (16–23) | **ja, laeuft** |
-| 3 | 2b (MK4S non-HF) | PLA non-HF (MK4S) | 15 | Herstellerangabe | `flow_test_Drucker2b_PLA_nonHF_0.4mm.gcode` | ja |
-| 4 | 2b (MK4S non-HF) | PETG non-HF (MK4S) | 9 | von XL uebernommen | `flow_test_Drucker2b_PETG_nonHF_0.4mm.gcode` | ja |
-| 5 | 2b (MK4S non-HF) | GreenTEC PRO (MK4S) | 15 | unbekannt | `flow_test_Drucker2b_GreenTEC_PRO_0.4mm.gcode` | ja |
-| 6 | 4 (XL, 0.6mm manuell) | PLA HF 0.6mm (XL) | 30 | Prusa-System | `flow_test_Drucker4_PLA_HF_0.6mm.gcode` (15–36) | ja |
-| 7 | 4 (XL, 0.6mm manuell) | PETG HF 0.6mm (XL) | 33 | Prusa-System | `flow_test_Drucker4_PETG_HF_0.6mm.gcode` | ja |
-| 8 | 4 (XL, 0.6mm manuell) | PETG non-HF 0.6mm (XL) | 17 | Prusa-System | `flow_test_Drucker4_PETG_nonHF_0.6mm.gcode` | ja |
-| 9 | 4 (XL, 0.6mm manuell) | PLA non-HF 0.6mm (XL) | 15.5 | Prusa-System | `flow_test_Drucker4_PLA_nonHF_0.6mm.gcode` | ja |
-| 10 | 4 (XL non-HF, Kopf 2/3) | PLA non-HF (XL) | 15 | Herstellerangabe | `flow_test_Drucker4_PLA_nonHF_0.4mm.gcode` | ja |
-| 11 | 4 (XL non-HF, Kopf 2/3) | PETG non-HF (XL) | 9 | Prusa-System | `flow_test_Drucker4_PETG_nonHF_0.4mm.gcode` | ja |
-| 12 | 4 (XL non-HF, Kopf 2/3) | TPU V2 (XL) | 2.0 | Annahme | `flow_test_Drucker4_TPU_0.4mm.gcode` (0.75–2.5) | ja |
-| 13 | 3 (MK3S) | PETG (MK3) | 10 | Pile-Test ✅ | `flow_test_Drucker3_PETG_0.4mm.gcode` (11–16) | nur Feinmessung |
-| 14 | 3 (MK3S) | PLA (MK3) | 7 | Pile-Test ✅ | `flow_test_Drucker3_PLA_0.4mm.gcode` | nur Feinmessung |
-| — | 4 (XL HF) | PETG HF (XL) | 18 | Pile-Test ✅ 2026-09-09 | — | nein |
-| — | 3/2/2b | TPU V2 (MK3-MK4S) | 1.5 | Testturm ✅ | — | nein |
-| 15 | 1 (MK3.5 0.6mm) | PETG 0.6mm (MK3.5) | 14 | Prusa-System, Profil neu | `flow_test_Drucker1_PETG_0.6mm.gcode` (8–24) | ja |
-| 16 | 1 (MK3.5 0.6mm) | PLA 0.6mm (MK3.5) | 15 | Prusa-System, Profil neu | `flow_test_Drucker1_PLA_0.6mm.gcode` (9–25) | ja |
+**Verifiziert** (per Pile-Test oder Testturm am eigenen Material gemessen):
 
-Empfohlene Reihenfolge: nach Nummer. Oben stehen die Werte, die entweder
-reine Systemschaetzungen auf viel genutzter Hardware sind (1) oder gerade
-aktiv in Frage stehen (2); die 0.6mm-Gruppe (6–9) hat die groessten
-unbelegten Spruenge nach oben, da liegt das meiste Zeitpotenzial. 13 und 14
-sind bereits gemessen, eine Feinmessung koennte dort noch 1–3 mm3/s heben.
+| Drucker | Profil | Wert | gemessen |
+|---|---|---|---|
+| 4 (XL HF) | PLA HF (XL) 0.4mm | **21** @225°C | 2026-11-07, 3× |
+| 4 (XL HF) | PETG HF (XL) 0.4mm | **18** @245°C | 2026-09-09, 3× |
+| 2 (MK4S HF) | PETG HF (MK4S) | **20** @245°C | 2026-11-07, 3× — Feinmessung 22–26 offen |
+| 3 (MK3S) | PETG (MK3) | **12** @240°C | 2026-08-30 + 2026-11-07 — Decke offen, siehe Ergebnisse |
+| 3 (MK3S) | PLA (MK3) | **7** @210°C | 2026-08-30, 4× |
+| 3/2/2b | TPU V2 (MK3-MK4S) | **1.5** | Testturm, U. Hornstein 24.1.24 |
+
+**Offen**, in empfohlener Reihenfolge:
+
+| # | Drucker | Profil | Wert | Herkunft | Testdatei |
+|---|---|---|---|---|---|
+| 1 | 3 (MK3S) | PETG (MK3), weiß nach oben | 12 | Decke nicht erreicht | `flow_test_Drucker3_PETG_0.4mm_hoch.gcode` (16–24) |
+| 2 | 2 (MK4S HF) | PETG HF (MK4S), Feinmessung | 20 | Decke zwischen 21 und 24 | `flow_test_Drucker2_PETG_HF_0.4mm_fein.gcode` (22–26) |
+| 3 | 4 (XL, 0.6mm) | PLA HF 0.6mm (XL) | 30 | Prusa-System | `flow_test_Drucker4_PLA_HF_0.6mm.gcode` (15–36) |
+| 4 | 4 (XL, 0.6mm) | PETG HF 0.6mm (XL) | 33 | Prusa-System | `flow_test_Drucker4_PETG_HF_0.6mm.gcode` |
+| 5 | 4 (XL, 0.6mm) | PETG non-HF 0.6mm (XL) | 17 | Prusa-System | `flow_test_Drucker4_PETG_nonHF_0.6mm.gcode` |
+| 6 | 4 (XL, 0.6mm) | PLA non-HF 0.6mm (XL) | 15.5 | Prusa-System | `flow_test_Drucker4_PLA_nonHF_0.6mm.gcode` |
+| 7 | 2b (MK4S non-HF) | PETG non-HF (MK4S) | 9 | von XL übernommen | `flow_test_Drucker2b_PETG_nonHF_0.4mm.gcode` |
+| 8 | 2b (MK4S non-HF) | PLA non-HF (MK4S) | 15 | Herstellerangabe | `flow_test_Drucker2b_PLA_nonHF_0.4mm.gcode` |
+| 9 | 2b (MK4S non-HF) | GreenTEC PRO (MK4S) | 15 | unbekannt | `flow_test_Drucker2b_GreenTEC_PRO_0.4mm.gcode` |
+| 10 | 1 (MK3.5 0.6mm) | PETG 0.6mm (MK3.5) | 14 | Prusa-System, Profil neu | `flow_test_Drucker1_PETG_0.6mm.gcode` (8–24) |
+| 11 | 1 (MK3.5 0.6mm) | PLA 0.6mm (MK3.5) | 15 | Prusa-System, Profil neu | `flow_test_Drucker1_PLA_0.6mm.gcode` (9–25) |
+| 12 | 4 (XL non-HF) | PETG non-HF (XL) 0.4mm | 9 | Prusa-System | `flow_test_Drucker4_PETG_nonHF_0.4mm.gcode` |
+| 13 | 4 (XL non-HF) | PLA non-HF (XL) 0.4mm | 15 | Herstellerangabe | `flow_test_Drucker4_PLA_nonHF_0.4mm.gcode` |
+| 14 | 4 (XL non-HF) | TPU V2 (XL) | 2.0 | Annahme | `flow_test_Drucker4_TPU_0.4mm.gcode` (0.75–2.5) |
+| 15 | 3 (MK3S) | PLA (MK3), Feinmessung | 7 | gemessen, Grauzone bei 10 | noch zu erzeugen (8–11) |
+
+Die Reihenfolge folgt dem erwarteten Zeitgewinn: oben die beiden Fälle, wo eine
+gemessene Decke noch nicht gefunden ist (1, 2), dann die 0.6mm-Gruppe der XL
+(3–6) mit den größten unbelegten Systemwerten, dann die ungetesteten
+MK4S-non-HF- und MK3.5-Profile. Ganz unten steht die MK3S-PLA-Feinmessung, die
+höchstens 1 mm³/s bringt.
+
+Ein offener Nebenbefund aus dem MK4S-Test: `PETG HF (XL)` zeigt dasselbe Muster
+(sauber bis 21, Abriss bei 24) und steht auf 18, während die MK4S jetzt 20 hat.
+Auf der XL klickte 24 allerdings hart, auf der MK4S fällt nur die Masse. Eine
+Feinmessung 22–26 auf der XL könnte dort ebenfalls 18 → 20 heben.
 
 ### Drucker 1 (MK3.5, 0.6mm): Profile angelegt 2026-11-07
 
@@ -284,6 +299,9 @@ aufgeteilt werden -- derzeit keyen sie nur auf Modell und Duesendurchmesser.
 | 2026-09-09 | PETG HF (XL) Rubinrot | `tools/flow_test_Drucker4_PETG_HF_0.4mm.gcode` (245°C, korrigierte .ini-Temp), 3× Messreihe, Stufen 6–27 mm³/s (3er-Schritte) — siehe `measurements/Drucker 4` | Konsistent über alle 3 Messreihen: 6/9/12/15/18/21 mm³/s sauber (Masse 0,56–0,60 g), **24 mm³/s klickt in allen 3 Reihen, abgebrochen**. | **Ergebnis:** sauber bis 21, Grenze bei 24. Mit Sicherheitsmarge auf 21 abgezogen → **neuer `filament_max_volumetric_speed` = 18 mm³/s** (bisher 22, Prusa-System-Default). Bereits in `filament/FREILab PETG HF (XL).ini` eingetragen (2026-09-09). |
 | 2026-11-04 | PLA HF (XL) Kopf1 | Realdruck im 0.28mm-DRAFT-Profil (kein Pile-Test), Drucker 4 Kopf 1 | **Klicken im Realdruck** bei 220°C, mit **224°C** klickfrei (M. Tetard). In PrusaSlicer zeigte das Profil dabei `filament_max_volumetric_speed = 21` — also höchstwahrscheinlich noch der **Stand vor Commit `f408f05`** (09.09.2026, 21→ 15), der nie in den Slicer ausgerollt wurde. 21 mm³/s ist exakt die im Pile-Test gemessene Klickgrenze, womit das Klicken ohne Temperatureinfluss erklärt wäre. | **Noch kein Ergebnis, läuft als Versuch:** `temperature` 220 → **225** und `filament_max_volumetric_speed` 15 → **21** in `filament/FREILab PLA HF (XL).ini` (2026-11-04) — Frage: trägt die höhere Temperatur die 21 mm³/s, die bei 220°C reproduzierbar abrissen? ⚠️ Bewusst **oberhalb** der gemessenen Grenze, bis das bestätigt ist. Bei erneutem Klicken zurück auf 15 (dann war die alte Messung korrekt und nur der Rollout fehlte). Zu prüfen wäre anschließend, ob `PLA HF (MK4S)` (ebenfalls 21 bei 220°C) dieselbe Anhebung braucht. |
 | 2026-11-07 | PLA HF (XL) Kopf1 | Qualitäts-Testdruck bei 225°C (kein Flow-Test) | **Qualität gut** (M. Tetard) — keine Auffälligkeiten, die gegen die höhere Temperatur sprechen. | **Ergebnis:** 225°C wird für **alle vier** XL-PLA-Profile übernommen (`PLA HF 0.6mm`, `PLA non-HF`, `PLA non-HF 0.6mm` von 220 → 225), damit die vier mvs-Messungen untereinander vergleichbar sind. Bewertet wurde nur die 0.4mm-HF-Kombination; für die anderen drei ist die Temperatur übertragen, nicht geprüft. Die mvs-Werte selbst bleiben damit alle offen — Testdateien liegen auf 225°C bereit. |
+| 2026-11-07 | PLA HF (XL) Kopf1, metallic rot | `flow_test_Drucker4_PLA_HF_0.4mm.gcode` (**225°C**), 3× Messreihe, Stufen 16–23 in 1er-Schritten — siehe `measurements/Drucker 4` | Konsistent über alle 3 Reihen: 16–21 mm³/s sauber (Masse 0,57–0,59 g), bei **22 mm³/s** einheitlicher Massenabfall auf 0,55 g (ca. 4 %, **ohne** Klicken), bei **23 mm³/s** klares Klicken und Abbruch in allen 3 Reihen. | **Ergebnis: `filament_max_volumetric_speed` bleibt 21** — höchste durchgehend saubere Stufe, zusätzlich im Realdruck bestätigt (0.28mm-DRAFT auf Kopf 1 läuft klickfrei). **Die Temperaturfrage ist damit beantwortet:** bei 220°C war am 2026-09-09 nur bis 18 sauber und 21 riss ab — +5 K haben die Decke um 3 mm³/s (ca. 17 %) gehoben und den Abrisspunkt von 21 auf 23 verschoben. Einschränkung: 21 liegt nur eine Stufe unter dem ersten Massenabfall, die Marge ist kleiner als sonst im Set; 20 wäre der konservative Wert. |
+| 2026-11-07 | PETG HF (MK4S) melonengelb | `flow_test_Drucker2_PETG_HF_0.4mm.gcode` (245°C), 3× Messreihe, Stufen 6–27 in 3er-Schritten — siehe `measurements/Drucker 2` | Konsistent: 6–21 mm³/s sauber (0,57–0,59 g), bei **24 mm³/s** Massenabfall auf 0,55 g (ca. 5 %, ohne Klicken), bei **27 mm³/s** Klicken und Abbruch in allen 3 Reihen. | **Ergebnis: 22 → 20.** Der Prusa-System-Default 22 lag knapp über der höchsten sauberen Stufe. Die echte Decke liegt zwischen 21 und 24, wegen der 3er-Schritte nicht genauer bekannt — Feinmessung 22–26 in 1er-Schritten steht aus (`flow_test_Drucker2_PETG_HF_0.4mm_fein.gcode`). Nebenbefund: `PETG HF (XL)` hat dasselbe Muster (sauber 21, Abriss 24) und steht auf 18; dort klickte 24 aber hart, hier fällt nur die Masse — eine Feinmessung könnte auch die XL von 18 auf 20 heben. |
+| 2026-11-07 | PETG (MK3) **weiß** | `flow_test_Drucker3_PETG_0.4mm.gcode` (240°C, **Bett 80**), 3× Messreihe, Stufen 11–16 in 1er-Schritten — siehe `measurements/Drucker 3` | **Kein Klicken auf irgendeiner Stufe**, Massen durchgehend 0,56–0,62 g ohne systematischen Abfall. Die Decke wurde nicht erreicht. | **Widerspruch zur Messung vom 2026-08-30** (PETG schwarz, Bett 60): dort klickte 15 mm³/s reproduzierbar, hier laufen 15 und 16 sauber. Unterschiedlich waren Farbe/Charge **und** die Betttemperatur — welche Variable es ausmacht, ist offen. Weil ein Profil für alle Farben gilt, zählt die schwächere Messung: **10 → 12**, die höchste Stufe, die beide Messungen tragen. Offen: weiß nach oben austesten (`..._hoch.gcode`, 16–24) und schwarz bei Bett 80°C wiederholen. |
 
 ## Vorgehen
 

@@ -73,11 +73,31 @@ messreihe 3 2026-08-30
 
 mk3 PETG weiss
 testdatei: flow_test_Drucker3_PETG_0.4mm.gcode -- 240C, Bett 80C
+HINWEIS: KEIN Klicken auf keiner Stufe, auch nicht bei 16 -- Decke nicht erreicht.
+
 messreihe 1 2026-11-07
 ;####### Flow Rate Sequence
-; Pile 1: 11.0mm3/s
-; Pile 2: 12.0mm3/s
-; Pile 3: 13.0mm3/s
-; Pile 4: 14.0mm3/s
-; Pile 5: 15.0mm3/s
-; Pile 6: 16.0mm3/s
+; Pile 1: 11.0mm3/s 0,61g
+; Pile 2: 12.0mm3/s 0,59g
+; Pile 3: 13.0mm3/s 0,60g
+; Pile 4: 14.0mm3/s 0,60g
+; Pile 5: 15.0mm3/s 0,57g
+; Pile 6: 16.0mm3/s 0,56g
+
+messreihe 2 2026-11-07
+;####### Flow Rate Sequence
+; Pile 1: 11.0mm3/s 0,59g
+; Pile 2: 12.0mm3/s 0,58g
+; Pile 3: 13.0mm3/s 0,59g
+; Pile 4: 14.0mm3/s 0,60g
+; Pile 5: 15.0mm3/s 0,58g
+; Pile 6: 16.0mm3/s 0,58g
+
+messreihe 3 2026-11-07
+;####### Flow Rate Sequence
+; Pile 1: 11.0mm3/s 0,61g
+; Pile 2: 12.0mm3/s 0,62g
+; Pile 3: 13.0mm3/s 0,59g
+; Pile 4: 14.0mm3/s 0,61g
+; Pile 5: 15.0mm3/s 0,61g
+; Pile 6: 16.0mm3/s 0,61g
